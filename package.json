@@ -1,32 +1,48 @@
 {
-  "name": "andesite",
+  "name": "nanoaddr",
   "version": "0.0.0",
-  "description": "Your crypto dashboard",
+  "description": "",
   "author": "Nicolas Jakob <nicow.jakob@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/njakob/andesite",
-  "repository": "https://github.com/njakob/andesite",
+  "homepage": "https://github.com/njakob/nanoaddr",
+  "repository": "https://github.com/njakob/nanoaddr",
   "bugs": {
-    "url": "https://github.com/njakob/andesite/issues"
+    "url": "https://github.com/njakob/nanoaddr/issues"
   },
-  "main": "lib/index.js",
-  "keywords": [
-    "desktop",
-    "dashboard",
-    "crypto",
-    "currency",
-    "wallet",
-    "local",
-    "btc",
-    "eth",
-    "ltc",
-    "xrb"
-  ],
   "main": "main.js",
+  "keywords": [
+    "nano",
+    "xrb",
+    "address",
+    "generator"
+  ],
   "scripts": {
-    "start": "electron ."
+    "start:dev": "webpack-dev-server --config webpack.config.dev.js --port 9333"
   },
   "devDependencies": {
-    "electron": "~1.7.8"
+    "@babel/cli": "^7.0.0-beta.40",
+    "@babel/core": "^7.0.0-beta.40",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.40",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.40",
+    "@babel/plugin-syntax-jsx": "^7.0.0-beta.40",
+    "@babel/plugin-transform-flow-strip-types": "^7.0.0-beta.40",
+    "@babel/plugin-transform-react-display-name": "^7.0.0-beta.40",
+    "@babel/plugin-transform-react-jsx": "^7.0.0-beta.40",
+    "babel-loader": "8.0.0-beta.0",
+    "babel-plugin-module-resolver": "^3.1.0",
+    "cross-env": "^5.1.3",
+    "file-loader": "^1.1.6",
+    "flow-bin": "^0.66.0",
+    "html-webpack-plugin": "^2.30.1",
+    "nano-lib": "^0.2.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-hot-loader": "^3.1.3",
+    "redux": "^3.7.2",
+    "styled-components": "^3.1.6",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.11.0",
+    "webpack-dev-server": "^2.11.1",
+    "worker-loader": "^1.1.0"
   }
 }

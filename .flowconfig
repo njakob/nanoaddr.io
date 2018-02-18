@@ -1,0 +1,11 @@
+[ignore]
+node_modules/styled-components/
+<PROJECT_ROOT>/build/
+
+[libs]
+
+[include]
+src/
+
+[options]
+module.name_mapper='^nanoaddr\/\(.*\)$' -> '<PROJECT_ROOT>/src/nanoaddr/\1'
