@@ -1,0 +1,32 @@
+{
+  "name": "andesite",
+  "version": "0.0.0",
+  "description": "Your crypto dashboard",
+  "author": "Nicolas Jakob <nicow.jakob@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/njakob/andesite",
+  "repository": "https://github.com/njakob/andesite",
+  "bugs": {
+    "url": "https://github.com/njakob/andesite/issues"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "desktop",
+    "dashboard",
+    "crypto",
+    "currency",
+    "wallet",
+    "local",
+    "btc",
+    "eth",
+    "ltc",
+    "xrb"
+  ],
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "~1.7.8"
+  }
+}
