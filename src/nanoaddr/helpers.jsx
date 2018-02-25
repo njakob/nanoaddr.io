@@ -32,6 +32,10 @@ export function getScore(wallet: protocol.Wallet, text: string): number {
   return ADDR_LENGTH - index;
 }
 
+export function getHardwareConcurrency(): number {
+  return window.navigator.hardwareConcurrency || 1;
+}
+
 export function downloadContent(content: string, filename: string): void {
   const element = document.createElement('a');
   element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`);

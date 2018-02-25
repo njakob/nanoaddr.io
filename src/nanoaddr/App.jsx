@@ -10,7 +10,7 @@ import Button from './components/Button';
 import Input from './components/Input';
 
 const Wrapper = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   background: ${props => props.theme.colors.b2};
 `;
 
@@ -82,7 +82,7 @@ type State = {
 };
 
 class App extends React.Component<Props, State> {
-  worker: Worker;
+  workers: Array<Worker> = [];
 
   state = {
     running: false,
@@ -106,9 +106,17 @@ class App extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    // $FlowFixMe
-    this.worker = new AddressWorker();
-    this.worker.onmessage = this.handleWorkerMessage;
+    const cores = helpers.getHardwareConcurrency();
+    for (let i = 0; i < cores; i += 1) {
+      // $FlowFixMe
+      const worker: Worker = new AddressWorker();
+      worker.onmessage = this.handleWorkerMessage;
+      this.workers.push(worker);
+    }
+  }
+
+  postMessage(message: protocol.WorkerMessage) {
+    this.workers.forEach(worker => worker.postMessage(message));
   }
 
   handleWorkerMessage = (event: MessageEvent) => {
@@ -155,14 +163,14 @@ class App extends React.Component<Props, State> {
     const newRunningState = !running;
 
     if (newRunningState) {
-      this.worker.postMessage({
+      this.postMessage({
         type: 'start',
         payload: {
           text,
         },
       });
     } else {
-      this.worker.postMessage({
+      this.postMessage({
         type: 'stop',
       });
     }
