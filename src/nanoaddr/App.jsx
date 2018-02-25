@@ -67,6 +67,10 @@ const Address = styled.code`
   font-size: 16px;
 `
 
+const AddressHighlight = styled.span`
+  color: ${props => props.theme.colors.b1};
+`;
+
 const Donation = styled.div`
   padding: 32px 60px;
   text-align: center;
@@ -187,6 +191,21 @@ class App extends React.Component<Props, State> {
     }), `${match.wallet.address}.json`);
   }
 
+  renderAddress(address: string) {
+    const { text } = this.state;
+    const chunks = address.split(text);
+    const elements = [];
+    chunks.forEach((chunk, idx) => {
+      elements.push(chunk);
+      if (idx !== chunks.length - 1) {
+        elements.push(<AddressHighlight key={idx}>{text}</AddressHighlight>);
+      }
+    });
+    return (
+      <Address>{elements}</Address>
+    );
+  }
+
   render() {
     return (
       <Wrapper>
@@ -211,7 +230,7 @@ class App extends React.Component<Props, State> {
             {this.state.matches.map((match) => (
               <Wallet key={match.wallet.address}>
                 <WalletColumn>
-                  <Address>{match.wallet.address}</Address>
+                  {this.renderAddress(match.wallet.address)}
                 </WalletColumn>
                 <WalletColumn>
                   <Button small onClick={() => this.handleDownload(match)}>
