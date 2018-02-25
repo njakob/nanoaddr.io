@@ -28,24 +28,24 @@ function reportMatch(match: protocol.Match): void {
   });
 }
 
-function search(): void {
+function search(text: string): void {
   count += 1;
   const arr = helpers.getSeedArray();
   self.crypto.getRandomValues(arr);
   const wallet = helpers.randomWallet(arr);
-  const score = helpers.getScore(wallet);
+  const score = helpers.getScore(wallet, text);
   if (score > 0) {
     reportMatch({ wallet, score });
   }
 }
 
-function searchBatch(): void {
+function searchBatch(text: string): void {
   setTimeout(() => {
     if (running) {
       for (let i = 0; i < BATCH_SIZE; i += 1) {
-        search();
+        search(text);
       }
-      searchBatch();
+      searchBatch(text);
     }
   }, 0);
 }
@@ -60,7 +60,7 @@ onmessage = (event) => {
     case 'start': {
       if (!running) {
         running = true;
-        searchBatch();
+        searchBatch(event.data.payload.text);
       }
       break;
     }

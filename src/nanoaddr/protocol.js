@@ -43,6 +43,9 @@ export type AppMessageEvent = MessageEvent & {
 
 export type StartWorkerMessage = {
   type: 'start';
+  payload: {
+    text: string;
+  };
 };
 
 export type StopWorkerMessage = {

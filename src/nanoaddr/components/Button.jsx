@@ -8,6 +8,7 @@ export default styled.button`
   border: 0;
   font-weight: bold;
   text-transform: uppercase;
+  font-size: 12px;
 
   ${props => props.small && css`
     padding: 6px 12px;

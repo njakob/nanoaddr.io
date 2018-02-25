@@ -7,6 +7,7 @@ import * as protocol from './protocol';
 import * as helpers from './helpers';
 import AddressWorker from './address.worker';
 import Button from './components/Button';
+import Input from './components/Input';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -76,6 +77,7 @@ type Props = {};
 
 type State = {
   running: boolean;
+  text: string;
   matches: Array<protocol.Match>;
 };
 
@@ -84,6 +86,7 @@ class App extends React.Component<Props, State> {
 
   state = {
     running: false,
+    text: '',
     matches: [],
   };
 
@@ -121,7 +124,6 @@ class App extends React.Component<Props, State> {
               match,
             ].sort();
             return {
-              ...prevState,
               matches: sortedMatches,
             };
           });
@@ -137,11 +139,37 @@ class App extends React.Component<Props, State> {
     }
   }
 
-  handleClick = () => {
-    this.worker.postMessage({
-      type: this.state.running ? 'stop' : 'start',
+  handleTextChange = (event: Event) => {
+    const inputElement = helpers.as(event.target, HTMLInputElement);
+    this.setState({
+      text: inputElement.value,
     });
-    this.setState({ running: !this.state.running });
+  }
+
+  handleClick = () => {
+    const {
+      running,
+      text,
+    } = this.state;
+
+    const newRunningState = !running;
+
+    if (newRunningState) {
+      this.worker.postMessage({
+        type: 'start',
+        payload: {
+          text,
+        },
+      });
+    } else {
+      this.worker.postMessage({
+        type: 'stop',
+      });
+    }
+
+    this.setState({
+      running: newRunningState,
+    });
   }
 
   handleDownload = (match: protocol.Match) => {
@@ -161,6 +189,12 @@ class App extends React.Component<Props, State> {
             <p>Kinda risky to generate your private key within a browser right? If you feel your secret might be stolen, simply let the system do its work offline!</p>
           </Description>
           <ButtonContainer>
+            <Input
+              type="text"
+              placeholder="Text"
+              value={this.state.text}
+              onChange={this.handleTextChange}
+            />
             <Button medium onClick={this.handleClick}>
               {this.state.running ? 'Stop' : 'Generate'}
             </Button>

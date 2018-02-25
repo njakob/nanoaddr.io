@@ -6,6 +6,16 @@ import * as protocol from './protocol';
 
 const ADDR_LENGTH = 64;
 
+export function as<T>(value: mixed, type: Class<T>): T {
+  if (value instanceof type) {
+    return value;
+  }
+
+  // $FlowFixMe
+  const typeName = type.name;
+  throw new Error();
+}
+
 export function getSeedArray(): Uint8Array {
   return new Uint8Array(32);
 }
@@ -14,8 +24,8 @@ export function randomWallet(arr: Uint8Array): protocol.Wallet {
   return nano.address.fromSeed(arr, 0);
 }
 
-export function getScore(wallet: protocol.Wallet): number {
-  const index = wallet.address.indexOf('aaa');
+export function getScore(wallet: protocol.Wallet, text: string): number {
+  const index = wallet.address.indexOf(text);
   if (index === -1) {
     return 0;
   }
