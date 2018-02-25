@@ -2,6 +2,7 @@ const path = require('path');
 const childProcess = require('child_process');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSWebpackPlugin = require('uglifyjs-webpack-plugin');
 
 const sourcesPath = path.join(process.cwd(), 'src');
 const nodeModulesPath = path.join(process.cwd(), 'node_modules');
@@ -10,13 +11,20 @@ const buildPath = path.join(process.cwd(), 'build');
 module.exports = {
   devtool: 'source-map',
 
-  entry: [
-    path.join(sourcesPath, 'nanoaddr'),
-  ],
+  entry: {
+    app: [
+      path.join(sourcesPath, 'nanoaddr'),
+    ],
+    vendors: [
+     'react',
+     'react-dom',
+     'styled-components',
+   ],
+  },
 
   output: {
     path: buildPath,
-    filename: 'bundle.js',
+    filename: '[name].[chunkhash].js',
     publicPath: '/',
   },
 
@@ -54,23 +62,15 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({ title: 'Nano Addr' }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
-      __DEV__: true,
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendors',
     }),
+    new HtmlWebpackPlugin({ title: 'Nano Addr' }),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      __DEV__: false,
+    }),
+    new UglifyJSWebpackPlugin(),
   ],
-
-  devServer: {
-    hot: true,
-    contentBase: buildPath,
-    stats: {
-      colors: true,
-      chunks: false,
-      children: false,
-    },
-  },
 };

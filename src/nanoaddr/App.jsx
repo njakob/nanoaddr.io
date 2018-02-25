@@ -22,6 +22,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 60px 100px;
+  flex: 1 1;
 `;
 
 const Title = styled.h1`
@@ -42,20 +43,21 @@ const Description = styled.div`
   padding: 32px 60px;
   font-size: 16px;
   text-align: center;
+  max-width: 500px;
   color: ${props => props.theme.colors.b0};
 `;
 
 const ButtonContainer = styled.div`
-  padding: 32px 60px;
+  padding: 32px 0;
 `;
 
 const Statistics = styled.div`
-  padding: 32px 60px;
+  padding: 32px 0;
   color: ${props => props.theme.colors.b0};
 `;
 
 const WalletList = styled.div`
-  padding: 32px 60px;
+  padding: 32px 0;
 `;
 
 const Wallet = styled.div`
@@ -80,7 +82,8 @@ const AddressHighlight = styled.span`
 `;
 
 const Donation = styled.div`
-  padding: 32px 60px;
+  padding: 32px 0;
+  max-width: 500px;
   text-align: center;
   color: ${props => props.theme.colors.b0};
 `

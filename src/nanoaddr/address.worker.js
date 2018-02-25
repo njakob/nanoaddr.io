@@ -3,7 +3,7 @@
 import * as protocol from './protocol';
 import * as helpers from './helpers';
 
-const BATCH_SIZE = 100;
+const BATCH_SIZE = 40;
 
 let running = false;
 let count = 0;
