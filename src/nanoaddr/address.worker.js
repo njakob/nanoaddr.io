@@ -18,13 +18,12 @@ function reportAPS(aps: number): void {
   });
 }
 
-function reportAddress(addr: protocol.Address, score: number): void {
+function reportMatch(match: protocol.Match): void {
   // $FlowFixMe
   postMessage({
-    type: 'addr',
+    type: 'match',
     payload: {
-      addr,
-      score,
+      match,
     },
   });
 }
@@ -33,10 +32,10 @@ function search(): void {
   count += 1;
   const arr = helpers.getSeedArray();
   self.crypto.getRandomValues(arr);
-  const addr = helpers.randomAddress(arr);
-  const score = helpers.getScore(addr);
+  const wallet = helpers.randomWallet(arr);
+  const score = helpers.getScore(wallet);
   if (score > 0) {
-    reportAddress(addr, score);
+    reportMatch({ wallet, score });
   }
 }
 
@@ -59,8 +58,10 @@ setInterval(() => {
 onmessage = (event) => {
   switch (event.data.type) {
     case 'start': {
-      running = true;
-      searchBatch();
+      if (!running) {
+        running = true;
+        searchBatch();
+      }
       break;
     }
     case 'stop': {

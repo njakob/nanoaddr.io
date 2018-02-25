@@ -54,7 +54,7 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({ title: 'Andesite' }),
+    new HtmlWebpackPlugin({ title: 'Nano Addr' }),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),

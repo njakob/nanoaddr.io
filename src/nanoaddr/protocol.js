@@ -1,19 +1,23 @@
 /* @flow */
 
-export type Address = {
+export type Wallet = {
   secret: string;
   address: string;
+};
+
+export type Match = {
+  wallet: Wallet;
+  score: number;
 };
 
 /**
  * Application Message Protocol
  */
 
-export type AddressAppMessage = {
-  type: 'addr';
+export type MatchAppMessage = {
+  type: 'match';
   payload: {
-    addr: Address;
-    score: number;
+    match: Match;
   };
 };
 
@@ -25,7 +29,7 @@ export type APSAppMessage = {
 };
 
 export type AppMessage =
-  | AddressAppMessage
+  | MatchAppMessage
   | APSAppMessage
   ;
 
