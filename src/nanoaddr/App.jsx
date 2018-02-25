@@ -9,6 +9,7 @@ import AddressWorker from './address.worker';
 import Button from './components/Button';
 import Input from './components/Input';
 
+const DONATION_ADDR = 'xrb_35guzg4u6q9k8xryazhe7eauu4bsm6d7sfzj34matwa9rjsbu54uft5z9kry';
 const SAMPLES_COUNT = 3;
 
 const Wrapper = styled.div`
@@ -75,6 +76,7 @@ const WalletColumn = styled.div`
 
 const Address = styled.code`
   font-size: 16px;
+  color: ${props => props.theme.colors.b0};
 `
 
 const AddressHighlight = styled.span`
@@ -83,6 +85,11 @@ const AddressHighlight = styled.span`
 
 const Donation = styled.div`
   padding: 32px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+const DonationText = styled.div`
   max-width: 500px;
   text-align: center;
   color: ${props => props.theme.colors.b0};
@@ -275,8 +282,10 @@ class App extends React.Component<Props, State> {
             ))}
           </WalletList>
           <Donation>
-            <p>You found your perfect address?</p>
-            <p>You can buy me a beer or share this amazing piece of tech.</p>
+            <DonationText>
+              <p>You found your perfect address? You can buy me a beer or share this amazing piece of tech.</p>
+            </DonationText>
+            <Address>{DONATION_ADDR}</Address>
           </Donation>
         </Container>
       </Wrapper>
