@@ -10,6 +10,7 @@ import Button from './components/Button';
 import Input from './components/Input';
 
 const Wrapper = styled.div`
+  display: flex;
   min-height: 100vh;
   background: ${props => props.theme.colors.b2};
 `;
@@ -19,6 +20,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 60px 100px;
+  overflow-y: scroll;
 `;
 
 const Title = styled.h1`
@@ -222,7 +224,7 @@ class App extends React.Component<Props, State> {
               value={this.state.text}
               onChange={this.handleTextChange}
             />
-            <Button medium onClick={this.handleClick}>
+            <Button medium disabled={helpers.getComplexity(this.state.text) < 9} onClick={this.handleClick}>
               {this.state.running ? 'Stop' : 'Generate'}
             </Button>
           </ButtonContainer>

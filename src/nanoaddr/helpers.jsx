@@ -32,6 +32,10 @@ export function getScore(wallet: protocol.Wallet, text: string): number {
   return ADDR_LENGTH - index;
 }
 
+export function getComplexity(text: string): number {
+  return text.length * text.length;
+}
+
 export function getHardwareConcurrency(): number {
   return window.navigator.hardwareConcurrency || 1;
 }
