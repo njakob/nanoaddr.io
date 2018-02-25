@@ -37,6 +37,7 @@ const Meta = styled.p`
 const Description = styled.div`
   padding: 32px 60px;
   font-size: 16px;
+  text-align: center;
   color: ${props => props.theme.colors.b0};
 `;
 
@@ -49,12 +50,19 @@ const WalletList = styled.div`
 `;
 
 const Wallet = styled.div`
+  display: flex;
   font-size: 12px;
+  padding: 6px 0;
   color: ${props => props.theme.colors.b0};
 `;
 
+const WalletColumn = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+`;
+
 const Address = styled.code`
-  padding: 6px;
   font-size: 16px;
 `
 
@@ -82,13 +90,12 @@ class App extends React.Component<Props, State> {
   componentWillMount() {
     injectGlobal`
       @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
-      @import url('https://fonts.googleapis.com/css?family=Noto+Mono');
 
       body {
         font-family: Noto Sans;
       }
 
-      body, div, p {
+      body, div, p, h1, h2 {
         padding: 0;
         margin: 0;
       }
@@ -137,6 +144,13 @@ class App extends React.Component<Props, State> {
     this.setState({ running: !this.state.running });
   }
 
+  handleDownload = (match: protocol.Match) => {
+    helpers.downloadContent(JSON.stringify({
+      addr: match.wallet.address,
+      key: match.wallet.secret,
+    }), `${match.wallet.address}.json`);
+  }
+
   render() {
     return (
       <Wrapper>
@@ -147,14 +161,21 @@ class App extends React.Component<Props, State> {
             <p>Kinda risky to generate your private key within a browser right? If you feel your secret might be stolen, simply let the system do its work offline!</p>
           </Description>
           <ButtonContainer>
-            <Button onClick={this.handleClick}>
-              {this.state.running ? 'Generate' : 'Stop'}
+            <Button medium onClick={this.handleClick}>
+              {this.state.running ? 'Stop' : 'Generate'}
             </Button>
           </ButtonContainer>
           <WalletList>
             {this.state.matches.map((match) => (
               <Wallet key={match.wallet.address}>
-                <Address>{match.wallet.address}</Address>
+                <WalletColumn>
+                  <Address>{match.wallet.address}</Address>
+                </WalletColumn>
+                <WalletColumn>
+                  <Button small onClick={() => this.handleDownload(match)}>
+                    Download
+                  </Button>
+                </WalletColumn>
               </Wallet>
             ))}
           </WalletList>

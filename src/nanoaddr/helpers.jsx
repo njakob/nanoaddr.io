@@ -21,3 +21,17 @@ export function getScore(wallet: protocol.Wallet): number {
   }
   return ADDR_LENGTH - index;
 }
+
+export function downloadContent(content: string, filename: string): void {
+  const element = document.createElement('a');
+  element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`);
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
+
+  const body = document.body;
+  if (body) {
+    body.appendChild(element);
+    element.click();
+    body.removeChild(element);
+  }
+}
