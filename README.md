@@ -1,9 +1,9 @@
 <h1 align="center">
-  Andesite
+  Nano Addr
 </h1>
 
 <p align="center">
-  Your crypto dashboard.
+  Find your perfect Nano address.
 </p>
 
 ## License
