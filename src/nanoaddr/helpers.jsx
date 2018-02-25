@@ -32,6 +32,12 @@ export function getScore(wallet: protocol.Wallet, text: string): number {
   return ADDR_LENGTH - index;
 }
 
+export function sortMatches(matches: Array<protocol.Match>): Array<protocol.Match> {
+  const copy = matches.slice(0);
+  copy.sort((a, b) => b.score - a.score);
+  return copy;
+}
+
 export function getComplexity(text: string): number {
   return text.length * text.length;
 }

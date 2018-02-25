@@ -7,6 +7,7 @@ const BATCH_SIZE = 100;
 
 let running = false;
 let count = 0;
+let interval: ?IntervalID = null;
 
 function reportAPS(aps: number): void {
   // $FlowFixMe
@@ -50,23 +51,31 @@ function searchBatch(text: string): void {
   }, 0);
 }
 
-setInterval(() => {
-  reportAPS(count);
-  count = 0;
-}, 1000);
-
 onmessage = (event) => {
   switch (event.data.type) {
     case 'start': {
       if (!running) {
         running = true;
         searchBatch(event.data.payload.text);
+        interval = setInterval(() => {
+          reportAPS(count);
+          count = 0;
+        }, 1000);
       }
       break;
     }
+
     case 'stop': {
       running = false;
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
       break;
+    }
+
+    default: {
+      throw new Error(`Unknown message ${String(event.data.type)}`);
     }
   }
 }

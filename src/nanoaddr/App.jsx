@@ -9,6 +9,8 @@ import AddressWorker from './address.worker';
 import Button from './components/Button';
 import Input from './components/Input';
 
+const SAMPLES_COUNT = 3;
+
 const Wrapper = styled.div`
   display: flex;
   min-height: 100vh;
@@ -20,7 +22,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 60px 100px;
-  overflow-y: scroll;
 `;
 
 const Title = styled.h1`
@@ -46,6 +47,11 @@ const Description = styled.div`
 
 const ButtonContainer = styled.div`
   padding: 32px 60px;
+`;
+
+const Statistics = styled.div`
+  padding: 32px 60px;
+  color: ${props => props.theme.colors.b0};
 `;
 
 const WalletList = styled.div`
@@ -85,15 +91,21 @@ type State = {
   running: boolean;
   text: string;
   matches: Array<protocol.Match>;
+  aps: number;
+  total: number;
 };
 
 class App extends React.Component<Props, State> {
   workers: Array<Worker> = [];
+  interval: ?IntervalID = null;
+  samples: Array<number> = [0];
 
   state = {
     running: false,
     text: '',
     matches: [],
+    aps: 0,
+    total: 0,
   };
 
   componentWillMount() {
@@ -102,6 +114,7 @@ class App extends React.Component<Props, State> {
 
       body {
         font-family: Noto Sans;
+        overflow-y: scroll;
       }
 
       body, div, p, h1, h2 {
@@ -131,19 +144,16 @@ class App extends React.Component<Props, State> {
       const appMessage = ((data: any): protocol.AppMessage);
       switch (appMessage.type) {
         case 'match': {
-          const { match } = appMessage.payload;
-          this.setState((prevState) => {
-            const sortedMatches = [
-              ...prevState.matches,
-              match,
-            ].sort();
-            return {
-              matches: sortedMatches,
-            };
-          });
+          this.setState(({
+            matches: helpers.sortMatches([
+              ...this.state.matches,
+              appMessage.payload.match,
+            ]),
+          }));
           break;
         }
         case 'aps': {
+          this.samples[0] += appMessage.payload.aps;
           break;
         }
         default: {
@@ -175,15 +185,31 @@ class App extends React.Component<Props, State> {
           text,
         },
       });
+      this.interval = setInterval(() => {
+        const sample = this.samples.reduce((acc, value) => acc + value, 0);
+        this.samples.unshift(0);
+        this.samples.splice(SAMPLES_COUNT);
+        this.setState({
+          aps: sample / SAMPLES_COUNT,
+        });
+      }, 1000);
+      this.setState({
+        running: newRunningState,
+      });
     } else {
       this.postMessage({
         type: 'stop',
       });
+      if (this.interval) {
+        clearInterval(this.interval);
+        this.interval = null;
+      }
+      this.samples = [0];
+      this.setState({
+        running: newRunningState,
+        aps: 0,
+      });
     }
-
-    this.setState({
-      running: newRunningState,
-    });
   }
 
   handleDownload = (match: protocol.Match) => {
@@ -228,6 +254,9 @@ class App extends React.Component<Props, State> {
               {this.state.running ? 'Stop' : 'Generate'}
             </Button>
           </ButtonContainer>
+          <Statistics>
+            {this.state.aps.toFixed(0)} APS
+          </Statistics>
           <WalletList>
             {this.state.matches.map((match) => (
               <Wallet key={match.wallet.address}>
