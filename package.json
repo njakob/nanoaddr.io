@@ -1,7 +1,7 @@
 {
   "name": "nanoaddr",
   "version": "0.0.0",
-  "description": "",
+  "description": "Find your perfect Nano address",
   "author": "Nicolas Jakob <nicow.jakob@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/njakob/nanoaddr",
@@ -9,11 +9,15 @@
   "bugs": {
     "url": "https://github.com/njakob/nanoaddr/issues"
   },
-  "main": "main.js",
   "keywords": [
     "nano",
+    "raiblocks",
     "xrb",
     "address",
+    "search",
+    "private",
+    "key",
+    "wallet",
     "generator"
   ],
   "scripts": {
