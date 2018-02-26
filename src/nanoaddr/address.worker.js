@@ -29,12 +29,12 @@ function reportMatch(match: protocol.Match): void {
   });
 }
 
-function search(text: string): void {
+function search(terms: Array<string>): void {
   count += 1;
   const arr = helpers.getSeedArray();
   self.crypto.getRandomValues(arr);
   const wallet = helpers.randomWallet(arr);
-  const score = helpers.getScore(wallet, text);
+  const score = helpers.getScore(wallet, terms);
   if (score > 0) {
     if (helpers.isAddressValid(wallet.address)) {
       reportMatch({ wallet, score });
@@ -42,13 +42,13 @@ function search(text: string): void {
   }
 }
 
-function searchBatch(text: string): void {
+function searchBatch(terms: Array<string>): void {
   setTimeout(() => {
     if (running) {
       for (let i = 0; i < BATCH_SIZE; i += 1) {
-        search(text);
+        search(terms);
       }
-      searchBatch(text);
+      searchBatch(terms);
     }
   }, 0);
 }
@@ -58,7 +58,7 @@ onmessage = (event) => {
     case 'start': {
       if (!running) {
         running = true;
-        searchBatch(event.data.payload.text);
+        searchBatch(event.data.payload.terms);
         interval = setInterval(() => {
           reportAPS(count);
           count = 0;

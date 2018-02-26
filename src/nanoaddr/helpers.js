@@ -4,8 +4,6 @@ import * as React from 'react';
 import nano from 'nano-lib';
 import * as protocol from './protocol';
 
-const ADDR_LENGTH = 64;
-
 export function as<T>(value: mixed, type: Class<T>): T {
   if (value instanceof type) {
     return value;
@@ -28,12 +26,16 @@ export function isAddressValid(address: string): boolean {
   return nano.address.isValid(address);
 }
 
-export function getScore(wallet: protocol.Wallet, text: string): number {
-  const index = wallet.address.indexOf(text);
-  if (index === -1) {
-    return 0;
-  }
-  return ADDR_LENGTH - index;
+export function getScore(wallet: protocol.Wallet, terms: Array<string>): number {
+  let score = 0;
+  let { address } = wallet;
+  const truncated = address.substring(5);
+  terms.forEach((term) => {
+    if (truncated.startsWith(term) || truncated.endsWith(term)) {
+      score += term.length;
+    }
+  });
+  return score;
 }
 
 export function sortMatches(matches: Array<protocol.Match>): Array<protocol.Match> {

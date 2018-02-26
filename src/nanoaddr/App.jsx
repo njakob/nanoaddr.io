@@ -192,7 +192,7 @@ class App extends React.Component<Props, State> {
       this.postMessage({
         type: 'start',
         payload: {
-          text,
+          terms: text.split(' '),
         },
       });
       this.interval = setInterval(() => {
