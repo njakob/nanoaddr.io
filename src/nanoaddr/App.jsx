@@ -251,7 +251,7 @@ class App extends React.Component<Props, State> {
           <Title>Nano Addr</Title>
           <Meta>Find your perfect Nano address</Meta>
           <Description>
-            <p>Kinda risky to generate your private key within a browser right? If you feel your secret might be stolen, simply let the system do its work offline!</p>
+            <p>Kinda risky to generate your private key within a browser, right? If you feel your secret might be stolen, simply let the system do its work offline!</p>
           </Description>
           <ButtonContainer>
             <Input
