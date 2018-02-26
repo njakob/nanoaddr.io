@@ -36,7 +36,9 @@ function search(text: string): void {
   const wallet = helpers.randomWallet(arr);
   const score = helpers.getScore(wallet, text);
   if (score > 0) {
-    reportMatch({ wallet, score });
+    if (helpers.isAddressValid(wallet.address)) {
+      reportMatch({ wallet, score });
+    }
   }
 }
 

@@ -24,6 +24,10 @@ export function randomWallet(arr: Uint8Array): protocol.Wallet {
   return nano.address.fromSeed(arr, 0);
 }
 
+export function isAddressValid(address: string): boolean {
+  return nano.address.isValid(address);
+}
+
 export function getScore(wallet: protocol.Wallet, text: string): number {
   const index = wallet.address.indexOf(text);
   if (index === -1) {
