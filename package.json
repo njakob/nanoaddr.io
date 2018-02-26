@@ -4,7 +4,7 @@
   "description": "Find your perfect Nano address",
   "author": "Nicolas Jakob <nicow.jakob@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/njakob/nanoaddr",
+  "homepage": "https://nanoaddr.io",
   "repository": "https://github.com/njakob/nanoaddr",
   "bugs": {
     "url": "https://github.com/njakob/nanoaddr/issues"
