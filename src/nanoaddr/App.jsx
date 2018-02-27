@@ -89,10 +89,17 @@ const Donation = styled.div`
   flex-direction: column;
   align-items: center;
 `
+
 const DonationText = styled.div`
   max-width: 500px;
   text-align: center;
   color: ${props => props.theme.colors.b0};
+`
+
+const Version = styled.div`
+  padding: 32px 0;
+  text-align: center;
+  color: ${props => props.theme.colors.b1};
 `
 
 type Props = {};
@@ -287,6 +294,9 @@ class App extends React.Component<Props, State> {
             </DonationText>
             <Address>{DONATION_ADDR}</Address>
           </Donation>
+          <Version>
+            Nanoaddr v{__VERSION__}
+          </Version>
         </Container>
       </Wrapper>
     );

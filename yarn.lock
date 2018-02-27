@@ -427,6 +427,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@njakob/parcel@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@njakob/parcel/-/parcel-1.3.2.tgz#4eaf3a8f44a7f1363d5914b84eec7a40612a13df"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"

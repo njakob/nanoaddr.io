@@ -3,6 +3,7 @@ node_modules/styled-components/
 <PROJECT_ROOT>/build/
 
 [libs]
+flow/
 
 [include]
 src/
