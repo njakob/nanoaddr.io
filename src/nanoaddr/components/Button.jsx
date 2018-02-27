@@ -5,11 +5,14 @@ import styled, { css } from 'styled-components';
 export default styled.button`
   color: ${props => props.theme.colors.b0};
   border: 0;
+  border-radius: 2px;
   font-weight: bold;
   text-transform: uppercase;
   font-size: 12px;
+  box-shadow: 0 0 2px 0 rgba(0,0,0,0.2);
 
   ${props => !props.disabled && css`
+    cursor: pointer;
     background: ${props => props.theme.colors.b1};
   `}
   ${props => props.disabled && css`
