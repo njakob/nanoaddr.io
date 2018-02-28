@@ -79,10 +79,6 @@ const Address = styled.code`
   color: ${props => props.theme.colors.b0};
 `
 
-const AddressHighlight = styled.span`
-  color: ${props => props.theme.colors.b1};
-`;
-
 const Donation = styled.div`
   padding: 32px 0;
   display: flex;
@@ -234,17 +230,8 @@ class App extends React.Component<Props, State> {
   }
 
   renderAddress(address: string) {
-    const { text } = this.state;
-    const chunks = address.split(text);
-    const elements = [];
-    chunks.forEach((chunk, idx) => {
-      elements.push(chunk);
-      if (idx !== chunks.length - 1) {
-        elements.push(<AddressHighlight key={idx}>{text}</AddressHighlight>);
-      }
-    });
     return (
-      <Address>{elements}</Address>
+      <Address>{address}</Address>
     );
   }
 
@@ -292,7 +279,7 @@ class App extends React.Component<Props, State> {
             <Address>{DONATION_ADDR}</Address>
           </Donation>
           <Version>
-            Nanoaddr v{__VERSION__}
+            Nano Addr v{__VERSION__}
           </Version>
         </Container>
       </Wrapper>
