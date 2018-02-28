@@ -8,12 +8,14 @@ import * as helpers from './helpers';
 import AddressWorker from './address.worker';
 import Button from './components/Button';
 import Input from './components/Input';
+import QRCodeDialog from './components/QRCodeDialog';
 
 const REPO_URL = 'https://github.com/njakob/nanoaddr';
 const DONATION_ADDR = 'xrb_3njakob6iz67oi5cfade3etoremah35wsdei6n6qnjrdhrjgj45kwhqotc85';
 const SAMPLES_COUNT = 3;
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   min-height: 100vh;
   background: ${props => props.theme.colors.b2};
@@ -111,6 +113,7 @@ type State = {
   matches: Array<protocol.Match>;
   aps: number;
   total: number;
+  qrCodeDialog: ?string;
 };
 
 class App extends React.Component<Props, State> {
@@ -124,6 +127,7 @@ class App extends React.Component<Props, State> {
     matches: [],
     aps: 0,
     total: 0,
+    qrCodeDialog: null,
   };
 
   componentWillMount() {
@@ -234,6 +238,18 @@ class App extends React.Component<Props, State> {
     helpers.downloadContent(JSON.stringify(match.wallet), `${match.wallet.address}.json`);
   }
 
+  handleShowQRCode = (match: protocol.Match) => {
+    this.setState({
+      qrCodeDialog: match.wallet.seed,
+    });
+  }
+
+  handleCloseQRCodeDialog = () => {
+    this.setState({
+      qrCodeDialog: null,
+    });
+  }
+
   renderAddress(address: string) {
     return (
       <Address>{address}</Address>
@@ -274,6 +290,11 @@ class App extends React.Component<Props, State> {
                     Download
                   </Button>
                 </WalletColumn>
+                <WalletColumn>
+                  <Button small onClick={() => this.handleShowQRCode(match)}>
+                    Show
+                  </Button>
+                </WalletColumn>
               </Wallet>
             ))}
           </WalletList>
@@ -287,6 +308,12 @@ class App extends React.Component<Props, State> {
             <Link href={REPO_URL}>Nano Addr</Link> v{__VERSION__}
           </Version>
         </Container>
+        {this.state.qrCodeDialog && (
+          <QRCodeDialog
+            value={this.state.qrCodeDialog}
+            onClose={this.handleCloseQRCodeDialog}
+          />
+        )}
       </Wrapper>
     );
   }
