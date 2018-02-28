@@ -18,9 +18,9 @@ module.exports = {
       path.join(sourcesPath, 'nanoaddr'),
     ],
     vendors: [
-     'react',
-     'react-dom',
-     'styled-components',
+      'react',
+      'react-dom',
+      'styled-components',
    ],
   },
 

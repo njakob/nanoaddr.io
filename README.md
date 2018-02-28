@@ -6,6 +6,6 @@
   Find your perfect Nano address.
 </p>
 
-## License
+## See
 
-[MIT License](LICENSE).
+- [marvinroger/nanocurrency-js](https://github.com/marvinroger/nanocurrency-js): A toolkit for the Nano cryptocurrency, allowing you to derive keys, generate seeds, hashes, signatures, proofs of work and blocks.

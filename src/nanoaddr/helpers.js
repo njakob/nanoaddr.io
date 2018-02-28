@@ -1,7 +1,6 @@
 /* @flow */
 
 import * as React from 'react';
-import nano from 'nano-lib';
 import * as protocol from './protocol';
 
 export function as<T>(value: mixed, type: Class<T>): T {
@@ -12,18 +11,6 @@ export function as<T>(value: mixed, type: Class<T>): T {
   // $FlowFixMe
   const typeName = type.name;
   throw new Error();
-}
-
-export function getSeedArray(): Uint8Array {
-  return new Uint8Array(32);
-}
-
-export function randomWallet(arr: Uint8Array): protocol.Wallet {
-  return nano.address.fromSeed(arr, 0);
-}
-
-export function isAddressValid(address: string): boolean {
-  return nano.address.isValid(address);
 }
 
 export function getScore(wallet: protocol.Wallet, terms: Array<string>): number {

@@ -1,9 +1,10 @@
 /* @flow */
 
+import * as nano from 'nanocurrency';
 import * as protocol from './protocol';
 import * as helpers from './helpers';
 
-const BATCH_SIZE = 40;
+const BATCH_SIZE = 2000;
 
 let running = false;
 let count = 0;
@@ -31,24 +32,37 @@ function reportMatch(match: protocol.Match): void {
 
 function search(terms: Array<string>): void {
   count += 1;
-  const arr = helpers.getSeedArray();
-  self.crypto.getRandomValues(arr);
-  const wallet = helpers.randomWallet(arr);
+
+  const array = new Uint8Array(32);
+  self.crypto.getRandomValues(array);
+  const seed = array.reduce((hex, idx) => {
+    return hex + ('0' + idx.toString(16)).slice(-2);
+  }, '');
+
+  const secretKey = nano.deriveSecretKey(seed, 0);
+  const publicKey = nano.derivePublicKey(secretKey);
+  const address = nano.deriveAddress(publicKey);
+
+  const wallet = {
+    seed,
+    secretKey,
+    publicKey,
+    address,
+  };
+
   const score = helpers.getScore(wallet, terms);
   if (score > 0) {
-    if (helpers.isAddressValid(wallet.address)) {
-      reportMatch({ wallet, score });
-    }
+    reportMatch({ wallet, score });
   }
 }
 
-function searchBatch(terms: Array<string>): void {
+function startSearch(terms: Array<string>): void {
   setTimeout(() => {
     if (running) {
       for (let i = 0; i < BATCH_SIZE; i += 1) {
         search(terms);
       }
-      searchBatch(terms);
+      startSearch(terms);
     }
   }, 0);
 }
@@ -57,12 +71,14 @@ onmessage = (event) => {
   switch (event.data.type) {
     case 'start': {
       if (!running) {
-        running = true;
-        searchBatch(event.data.payload.terms);
-        interval = setInterval(() => {
-          reportAPS(count);
-          count = 0;
-        }, 1000);
+        nano.init().then(() => {
+          running = true;
+          startSearch(event.data.payload.terms);
+          interval = setInterval(() => {
+            reportAPS(count);
+            count = 0;
+          }, 1000);
+        });
       }
       break;
     }

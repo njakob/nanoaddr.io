@@ -1,7 +1,9 @@
 /* @flow */
 
 export type Wallet = {
-  secret: string;
+  seed: string;
+  secretKey: string;
+  publicKey: string;
   address: string;
 };
 

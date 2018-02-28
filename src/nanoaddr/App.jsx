@@ -230,10 +230,7 @@ class App extends React.Component<Props, State> {
   }
 
   handleDownload = (match: protocol.Match) => {
-    helpers.downloadContent(JSON.stringify({
-      addr: match.wallet.address,
-      key: match.wallet.secret,
-    }), `${match.wallet.address}.json`);
+    helpers.downloadContent(JSON.stringify(match.wallet), `${match.wallet.address}.json`);
   }
 
   renderAddress(address: string) {

@@ -714,10 +714,6 @@ binary-extensions@^1.0.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
 
-blakejs@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/blakejs/-/blakejs-1.1.0.tgz#69df92ef953aa88ca51a32df6ab1c54a155fc7a5"
-
 block-stream@*:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/block-stream/-/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"
@@ -3057,12 +3053,9 @@ nan@^2.3.0:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.9.2.tgz#f564d75f5f8f36a6d9456cca7a6c4fe488ab7866"
 
-nano-lib@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/nano-lib/-/nano-lib-0.2.1.tgz#e1d0959862b1eb9d1036af057875302b3ec3099f"
-  dependencies:
-    blakejs "^1.1.0"
-    tweetnacl-blake2b "^1.0.1"
+nanocurrency@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/nanocurrency/-/nanocurrency-1.6.0.tgz#761b9fc757a0c56997cedc0965b75f6091cca2c1"
 
 nanomatch@^1.2.9:
   version "1.2.9"
@@ -4512,12 +4505,6 @@ tunnel-agent@^0.6.0:
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.6.0.tgz#27a5dea06b36b04a0a9966774b290868f0fc40fd"
   dependencies:
     safe-buffer "^5.0.1"
-
-tweetnacl-blake2b@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/tweetnacl-blake2b/-/tweetnacl-blake2b-1.0.1.tgz#726eb4ff6bb19db344d9aa33829b71e7922a324d"
-  dependencies:
-    blakejs "^1.1.0"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
