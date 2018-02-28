@@ -10,7 +10,7 @@ import Button from './components/Button';
 import Input from './components/Input';
 
 const REPO_URL = 'https://github.com/njakob/nanoaddr';
-const DONATION_ADDR = 'xrb_35guzg4u6q9k8xryazhe7eauu4bsm6d7sfzj34matwa9rjsbu54uft5z9kry';
+const DONATION_ADDR = 'xrb_3njakob6iz67oi5cfade3etoremah35wsdei6n6qnjrdhrjgj45kwhqotc85';
 const SAMPLES_COUNT = 3;
 
 const Wrapper = styled.div`
