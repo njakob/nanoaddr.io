@@ -4,11 +4,11 @@ import * as nano from 'nanocurrency';
 import * as protocol from './protocol';
 import * as helpers from './helpers';
 
-const BATCH_SIZE = 2000;
+const BATCH_SIZE = 8000;
 
 let running = false;
 let count = 0;
-let interval: ?IntervalID = null;
+let nextReport: number;
 
 function reportAPS(aps: number): void {
   // $FlowFixMe
@@ -61,34 +61,32 @@ function startSearch(terms: Array<string>): void {
     if (running) {
       for (let i = 0; i < BATCH_SIZE; i += 1) {
         search(terms);
+        const now = Date.now();
+        if (now > nextReport) {
+          reportAPS(count);
+          count = 0;
+          nextReport = now + 1000;
+        }
       }
       startSearch(terms);
     }
   }, 0);
 }
 
-onmessage = (event) => {
+onmessage = async (event) => {
   switch (event.data.type) {
     case 'start': {
       if (!running) {
-        nano.init().then(() => {
-          running = true;
-          startSearch(event.data.payload.terms);
-          interval = setInterval(() => {
-            reportAPS(count);
-            count = 0;
-          }, 1000);
-        });
+        await nano.init();
+        running = true;
+        nextReport = Date.now() + 1000;
+        startSearch(event.data.payload.terms);
       }
       break;
     }
 
     case 'stop': {
       running = false;
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
       break;
     }
 
