@@ -9,6 +9,7 @@ import AddressWorker from './address.worker';
 import Button from './components/Button';
 import Input from './components/Input';
 
+const REPO_URL = 'https://github.com/njakob/nanoaddr';
 const DONATION_ADDR = 'xrb_35guzg4u6q9k8xryazhe7eauu4bsm6d7sfzj34matwa9rjsbu54uft5z9kry';
 const SAMPLES_COUNT = 3;
 
@@ -95,6 +96,10 @@ const DonationText = styled.div`
 const Version = styled.div`
   padding: 32px 0;
   text-align: center;
+  color: ${props => props.theme.colors.b1};
+`
+
+const Link = styled.a`
   color: ${props => props.theme.colors.b1};
 `
 
@@ -279,7 +284,7 @@ class App extends React.Component<Props, State> {
             <Address>{DONATION_ADDR}</Address>
           </Donation>
           <Version>
-            Nano Addr v{__VERSION__}
+            <Link href={REPO_URL}>Nano Addr</Link> v{__VERSION__}
           </Version>
         </Container>
       </Wrapper>
