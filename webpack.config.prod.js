@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const childProcess = require('child_process');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
