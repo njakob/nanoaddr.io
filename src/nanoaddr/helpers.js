@@ -52,3 +52,16 @@ export function downloadContent(content: string, filename: string): void {
     body.removeChild(element);
   }
 }
+
+export function copyClipboard(content: string): void {
+  const textarea = document.createElement('textarea');
+  textarea.setAttribute('type', 'hidden');
+  textarea.textContent = content;
+  const body = document.body;
+  if (body) {
+    body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
+  }
+}

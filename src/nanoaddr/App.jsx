@@ -8,10 +8,11 @@ import * as helpers from './helpers';
 import AddressWorker from './address.worker';
 import Button from './components/Button';
 import Input from './components/Input';
+import Address from './components/Address';
 import QRCodeDialog from './components/QRCodeDialog';
+import DonationSection from './components/DonationSection';
 
 const REPO_URL = 'https://github.com/njakob/nanoaddr';
-const DONATION_ADDR = 'xrb_3njakob6iz67oi5cfade3etoremah35wsdei6n6qnjrdhrjgj45kwhqotc85';
 const SAMPLES_COUNT = 3;
 
 const Wrapper = styled.div`
@@ -76,24 +77,6 @@ const WalletColumn = styled.div`
   align-items: center;
   padding: 0 6px;
 `;
-
-const Address = styled.code`
-  font-size: 16px;
-  color: ${props => props.theme.colors.b0};
-`
-
-const Donation = styled.div`
-  padding: 32px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
-const DonationText = styled.div`
-  max-width: 500px;
-  text-align: center;
-  color: ${props => props.theme.colors.b0};
-`
 
 const Version = styled.div`
   padding: 32px 0;
@@ -238,9 +221,15 @@ class App extends React.Component<Props, State> {
     helpers.downloadContent(JSON.stringify(match.wallet), `${match.wallet.address}.json`);
   }
 
-  handleShowQRCode = (match: protocol.Match) => {
+  handleShowAddress = (address: string) => {
     this.setState({
-      qrCodeDialog: match.wallet.seed,
+      qrCodeDialog: address,
+    });
+  }
+
+  handleShowSeed = (seed: string) => {
+    this.setState({
+      qrCodeDialog: seed,
     });
   }
 
@@ -248,12 +237,6 @@ class App extends React.Component<Props, State> {
     this.setState({
       qrCodeDialog: null,
     });
-  }
-
-  renderAddress(address: string) {
-    return (
-      <Address>{address}</Address>
-    );
   }
 
   render() {
@@ -283,7 +266,10 @@ class App extends React.Component<Props, State> {
             {this.state.matches.map((match) => (
               <Wallet key={match.wallet.address}>
                 <WalletColumn>
-                  {this.renderAddress(match.wallet.address)}
+                  <Address
+                    value={match.wallet.address}
+                    onClick={() => this.handleShowAddress(match.wallet.address)}
+                  />
                 </WalletColumn>
                 <WalletColumn>
                   <Button small onClick={() => this.handleDownload(match)}>
@@ -291,19 +277,14 @@ class App extends React.Component<Props, State> {
                   </Button>
                 </WalletColumn>
                 <WalletColumn>
-                  <Button small onClick={() => this.handleShowQRCode(match)}>
+                  <Button small onClick={() => this.handleShowSeed(match.wallet.seed)}>
                     Show
                   </Button>
                 </WalletColumn>
               </Wallet>
             ))}
           </WalletList>
-          <Donation>
-            <DonationText>
-              <p>You found your perfect address? You can buy me a beer or share this amazing piece of tech.</p>
-            </DonationText>
-            <Address>{DONATION_ADDR}</Address>
-          </Donation>
+          <DonationSection onShowAddress={this.handleShowAddress} />
           <Version>
             <Link href={REPO_URL}>Nano Addr</Link> v{__VERSION__}
           </Version>
