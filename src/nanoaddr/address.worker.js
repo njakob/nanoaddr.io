@@ -5,6 +5,7 @@ import * as protocol from './protocol';
 import * as helpers from './helpers';
 
 const BATCH_SIZE = 8000;
+const SCORE_MIN = 3;
 
 let running = false;
 let count = 0;
@@ -51,7 +52,7 @@ function search(terms: Array<string>): void {
   };
 
   const score = helpers.getScore(wallet, terms);
-  if (score > 0) {
+  if (score > SCORE_MIN) {
     reportMatch({ wallet, score });
   }
 }

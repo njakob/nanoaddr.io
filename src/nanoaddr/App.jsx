@@ -256,7 +256,7 @@ class App extends React.Component<Props, State> {
               value={this.state.text}
               onChange={this.handleTextChange}
             />
-            <Button medium disabled={helpers.getComplexity(this.state.text) < 9} onClick={this.handleClick}>
+            <Button medium disabled={!this.state.text} onClick={this.handleClick}>
               {this.state.running ? 'Stop' : 'Generate'}
             </Button>
           </ButtonContainer>
