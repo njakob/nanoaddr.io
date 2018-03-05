@@ -11,6 +11,7 @@ import Input from './components/Input';
 import Address from './components/Address';
 import QRCodeDialog from './components/QRCodeDialog';
 import DonationSection from './components/DonationSection';
+import Disclaimer from './components/Disclaimer';
 
 const NANOADDR_REPO_URL = 'https://github.com/njakob/nanoaddr';
 const NANOCURRENCY_REPO_URL = 'https://github.com/marvinroger/nanocurrency-js';
@@ -80,7 +81,7 @@ const WalletColumn = styled.div`
 `;
 
 const Version = styled.div`
-  padding: 32px 0;
+  padding: 16px 0;
   text-align: center;
   color: ${props => props.theme.colors.b1};
 `
@@ -294,6 +295,7 @@ class App extends React.Component<Props, State> {
             ))}
           </WalletList>
           <DonationSection onShowAddress={this.handleShowAddress} />
+          <Disclaimer />
           <Version>
             <Link href={NANOADDR_REPO_URL}>Nano Addr</Link> v{__VERSION__} | Made with <Link href={NANOCURRENCY_REPO_URL}>nanocurrency-js</Link>
           </Version>
