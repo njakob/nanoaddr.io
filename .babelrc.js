@@ -5,10 +5,11 @@ module.exports = {
     '@babel/preset-es2015',
   ],
   plugins: [
+    '@babel/plugin-syntax-dynamic-import',
     '@babel/plugin-proposal-class-properties',
     '@babel/plugin-proposal-object-rest-spread',
-    // 'react-hot-loader/babel',
-    ['module-resolver', {
+    'babel-plugin-dynamic-import-node',
+    ['babel-plugin-module-resolver', {
       root: ['./src'],
     }],
   ],

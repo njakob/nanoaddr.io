@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { injectGlobal } from 'styled-components';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 import * as protocol from './protocol';
 import * as helpers from './helpers';
-import AddressWorker from './address.worker';
 import Button from './components/Button';
 import Input from './components/Input';
 import Address from './components/Address';
@@ -131,12 +131,16 @@ class App extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const cores = helpers.getHardwareConcurrency();
-    for (let i = 0; i < cores; i += 1) {
-      // $FlowFixMe
-      const worker: Worker = new AddressWorker();
-      worker.onmessage = this.handleWorkerMessage;
-      this.workers.push(worker);
+    if (__BROWSER__) {
+      import(/* webpackChunkName: "address-worker" */ 'nanoaddr/address.worker').then((AddressWorker) => {
+        const cores = helpers.getHardwareConcurrency();
+        for (let i = 0; i < cores; i += 1) {
+          // $FlowFixMe
+          const worker: Worker = new AddressWorker();
+          worker.onmessage = this.handleWorkerMessage;
+          this.workers.push(worker);
+        }
+      });
     }
   }
 
@@ -243,6 +247,10 @@ class App extends React.Component<Props, State> {
   render() {
     return (
       <Wrapper>
+        <Helmet>
+          <meta name="author" content="Nicolas Jakob" />
+          <title>Nano Addr</title>
+        </Helmet>
         <Container>
           <Title>Nano Addr</Title>
           <Meta>Find your perfect Nano address</Meta>

@@ -9,4 +9,5 @@ flow/
 src/
 
 [options]
+module.name_mapper='^scripts\/\(.*\)$' -> '<PROJECT_ROOT>/src/scripts/\1'
 module.name_mapper='^nanoaddr\/\(.*\)$' -> '<PROJECT_ROOT>/src/nanoaddr/\1'
