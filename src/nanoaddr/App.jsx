@@ -285,6 +285,7 @@ class App extends React.Component<Props, State> {
                 <WalletColumn>
                   <Address
                     value={match.wallet.address}
+                    highlights={match.score.locations}
                     onClick={() => this.handleShowAddress(match.wallet.address)}
                   />
                 </WalletColumn>

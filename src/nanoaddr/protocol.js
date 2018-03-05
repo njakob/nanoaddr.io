@@ -7,9 +7,19 @@ export type Wallet = {
   address: string;
 };
 
+export type Location = {
+  idx: number;
+  term: string;
+};
+
+export type Score = {
+  value: number;
+  locations: Array<Location>;
+};
+
 export type Match = {
   wallet: Wallet;
-  score: number;
+  score: Score;
 };
 
 /**

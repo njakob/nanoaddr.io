@@ -13,26 +13,32 @@ export function as<T>(value: mixed, type: Class<T>): T {
   throw new Error();
 }
 
-export function getScore(wallet: protocol.Wallet, terms: Array<string>): number {
-  let score = 0;
-  let { address } = wallet;
+export function getScore(wallet: protocol.Wallet, terms: Array<string>): protocol.Score {
+  const { address } = wallet;
   const truncated = address.substring(5);
-  terms.forEach((term) => {
-    if (truncated.startsWith(term) || truncated.endsWith(term)) {
+  const numTerms = terms.length;
+  const locations = [];
+  let score = 0;
+
+  for (let i = 0; i < numTerms; i += 1) {
+    const term = terms[i];
+    if (truncated.startsWith(term)) {
       score += term.length;
+      locations.push({ term, idx: 5 });
     }
-  });
-  return score;
+    if (truncated.endsWith(term)) {
+      score += term.length;
+      locations.push({ term, idx: 64 - term.length });
+    }
+  }
+
+  return { value: score, locations };
 }
 
 export function sortMatches(matches: Array<protocol.Match>): Array<protocol.Match> {
   const copy = matches.slice(0);
-  copy.sort((a, b) => b.score - a.score);
+  copy.sort((a, b) => b.score.value - a.score.value);
   return copy;
-}
-
-export function getComplexity(text: string): number {
-  return text.length * text.length;
 }
 
 export function getHardwareConcurrency(): number {
