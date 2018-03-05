@@ -55,7 +55,12 @@ const Description = styled.div`
 `;
 
 const ButtonContainer = styled.div`
+  display: flex;
   padding: 32px 0;
+`;
+
+const InputContainer = styled.div`
+  padding: 0 6px;
 `;
 
 const Statistics = styled.div`
@@ -259,12 +264,14 @@ class App extends React.Component<Props, State> {
             <p>Kinda risky to generate your private key within a browser, right? If you feel your secret might be stolen, simply let the system do its work offline!</p>
           </Description>
           <ButtonContainer>
-            <Input
-              type="text"
-              placeholder="Text"
-              value={this.state.text}
-              onChange={this.handleTextChange}
-            />
+            <InputContainer>
+              <Input
+                type="text"
+                placeholder="Terms to search"
+                value={this.state.text}
+                onChange={this.handleTextChange}
+              />
+            </InputContainer>
             <Button medium disabled={!this.state.text} onClick={this.handleClick}>
               {this.state.running ? 'Stop' : 'Generate'}
             </Button>
