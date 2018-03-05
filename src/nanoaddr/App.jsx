@@ -290,12 +290,20 @@ class App extends React.Component<Props, State> {
                   />
                 </WalletColumn>
                 <WalletColumn>
-                  <Button small onClick={() => this.handleDownload(match)}>
+                  <Button
+                    small
+                    title="Download corresponding seed"
+                    onClick={() => this.handleDownload(match)}
+                  >
                     Download
                   </Button>
                 </WalletColumn>
                 <WalletColumn>
-                  <Button small onClick={() => this.handleShowSeed(match.wallet.seed)}>
+                  <Button
+                    small
+                    title="Show private key as a QR code"
+                    onClick={() => this.handleShowSeed(match.wallet.seed)}
+                  >
                     Show
                   </Button>
                 </WalletColumn>
