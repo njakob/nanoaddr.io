@@ -61,6 +61,7 @@ const ButtonContainer = styled.div`
 
 const InputContainer = styled.div`
   padding: 0 6px;
+  display: flex;
 `;
 
 const Statistics = styled.div`
