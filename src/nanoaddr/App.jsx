@@ -11,6 +11,7 @@ import Input from './components/Input';
 import Address from './components/Address';
 import QRCodeDialog from './components/QRCodeDialog';
 import DonationSection from './components/DonationSection';
+import Offline from './components/Offline';
 import Disclaimer from './components/Disclaimer';
 
 const NANOADDR_REPO_URL = 'https://github.com/njakob/nanoaddr';
@@ -20,6 +21,7 @@ const SAMPLES_COUNT = 3;
 const Wrapper = styled.div`
   position: relative;
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: ${props => props.theme.colors.b2};
 `;
@@ -258,6 +260,7 @@ class App extends React.Component<Props, State> {
           <meta name="author" content="Nicolas Jakob" />
           <title>Nano Addr</title>
         </Helmet>
+        <Offline />
         <Container>
           <Title>Nano Addr</Title>
           <Meta>Find your perfect Nano address</Meta>
