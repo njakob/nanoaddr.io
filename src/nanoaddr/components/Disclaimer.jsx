@@ -17,6 +17,7 @@ const Header = styled.div`
 
 const Content = styled.div`
   padding: 16px 0;
+  text-align: center;
 `
 
 type State = {
@@ -42,7 +43,7 @@ class Disclaimer extends React.Component<{}, State> {
         </Header>
         {this.state.shown && (
           <Content>
-            The addresses and private keys are generated directly in your bowser without the involvment of any servers and are not transmitted over the Internet. For additional security we still recommend that you disconnect your computer from the Internet while using this site.
+            Nanoaddr.io does not provide any warranty for the displayed content and will not be held responsible should the use of the provided content result in any loss or damages.
           </Content>
         )}
       </Container>

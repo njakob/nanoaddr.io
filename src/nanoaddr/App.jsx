@@ -50,7 +50,7 @@ const Description = styled.div`
   padding: 32px 60px;
   font-size: 16px;
   text-align: center;
-  max-width: 500px;
+  max-width: 800px;
   color: ${props => props.theme.colors.b0};
 `;
 
@@ -261,7 +261,7 @@ class App extends React.Component<Props, State> {
           <Title>Nano Addr</Title>
           <Meta>Find your perfect Nano address</Meta>
           <Description>
-            <p>Kinda risky to generate your private key within a browser, right? If you feel your secret might be stolen, simply let the system do its work offline!</p>
+            <p>The addresses and private keys are generated directly in your bowser without the involvment of any servers and are not transmitted over the Internet. For additional security we still recommend that you disconnect your computer from the Internet while using this site.</p>
           </Description>
           <ButtonContainer>
             <InputContainer>
