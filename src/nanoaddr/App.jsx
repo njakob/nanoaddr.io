@@ -244,8 +244,16 @@ class App extends React.Component<Props, State> {
     return (
       <Wrapper>
         <Helmet>
-          <meta name="author" content="Nicolas Jakob" />
           <title>Nano Addr</title>
+          <link rel="canonical" href="https://nanoaddr.io/" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="author" content="Nicolas Jakob" />
+          <meta name="description" content="Vanity Nano address generator that works offline in your browser" />
+          <meta property="og:title" content="Nano Addr - Find your personalized Nano address" />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://nanoaddr.io/" />
+          <meta property="og:site_name" content="Nano Addr" />
+          <meta property="og:description" content="Vanity Nano address generator that works offline in your browser" />
         </Helmet>
         <Offline />
         <Container>
