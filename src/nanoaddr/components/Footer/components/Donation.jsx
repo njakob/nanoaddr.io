@@ -27,7 +27,7 @@ type Props = {
   onShowAddress: (address: string) => void;
 };
 
-function DonationSection(props: Props) {
+function Donation(props: Props) {
   return (
     <Container>
       <Text>
@@ -40,4 +40,4 @@ function DonationSection(props: Props) {
   );
 }
 
-export default DonationSection;
+export default Donation;

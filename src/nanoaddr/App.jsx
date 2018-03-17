@@ -10,12 +10,9 @@ import Button from './components/Button';
 import Input from './components/Input';
 import Address from './components/Address';
 import QRCodeDialog from './components/QRCodeDialog';
-import DonationSection from './components/DonationSection';
 import Offline from './components/Offline';
-import Disclaimer from './components/Disclaimer';
+import Footer from './components/Footer';
 
-const NANOADDR_REPO_URL = 'https://github.com/njakob/nanoaddr';
-const NANOCURRENCY_REPO_URL = 'https://github.com/marvinroger/nanocurrency-js';
 const SAMPLES_COUNT = 3;
 
 const Wrapper = styled.div`
@@ -87,16 +84,6 @@ const WalletColumn = styled.div`
   align-items: center;
   padding: 0 6px;
 `;
-
-const Version = styled.div`
-  padding: 16px 0;
-  text-align: center;
-  color: ${props => props.theme.colors.b1};
-`
-
-const Link = styled.a`
-  color: ${props => props.theme.colors.b1};
-`
 
 type Props = {};
 
@@ -314,11 +301,7 @@ class App extends React.Component<Props, State> {
               </Wallet>
             ))}
           </WalletList>
-          <DonationSection onShowAddress={this.handleShowAddress} />
-          <Disclaimer />
-          <Version>
-            <Link href={NANOADDR_REPO_URL}>Nano Addr</Link> v{__VERSION__} | Made with <Link href={NANOCURRENCY_REPO_URL}>nanocurrency-js</Link>
-          </Version>
+          <Footer onShowAddress={this.handleShowAddress} />
         </Container>
         {this.state.qrCodeDialog && (
           <QRCodeDialog
