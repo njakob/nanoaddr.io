@@ -52,7 +52,7 @@ function search(terms: Array<string>): void {
   };
 
   const score = helpers.getScore(wallet, terms);
-  if (score.value > SCORE_MIN) {
+  if (score.value >= SCORE_MIN) {
     reportMatch({ wallet, score });
   }
 }
