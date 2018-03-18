@@ -11,6 +11,7 @@ let running = false;
 let currentAddressesCount = 0;
 let currentIgnoredMatchesCount = 0;
 let nextReport = 0;
+let regexp: RegExp;
 
 function reportStats(addresses: number, ignoredMatches: number): void {
   // $FlowFixMe
@@ -33,7 +34,7 @@ function reportMatch(match: protocol.Match): void {
   });
 }
 
-function search(terms: Array<string>): void {
+function search(): void {
   currentAddressesCount += 1;
 
   const array = new Uint8Array(32);
@@ -53,7 +54,7 @@ function search(terms: Array<string>): void {
     address,
   };
 
-  const score = helpers.getScore(wallet, terms);
+  const score = helpers.getScore(wallet, regexp);
   if (score.value >= SCORE_MIN) {
     reportMatch({ wallet, score });
   } else if (score.value === 0) {
@@ -61,11 +62,11 @@ function search(terms: Array<string>): void {
   }
 }
 
-function startSearch(terms: Array<string>): void {
+function startSearch(): void {
   setTimeout(() => {
     if (running) {
       for (let i = 0; i < BATCH_SIZE; i += 1) {
-        search(terms);
+        search();
         const now = Date.now();
         if (now > nextReport) {
           reportStats(currentAddressesCount, currentIgnoredMatchesCount);
@@ -74,7 +75,7 @@ function startSearch(terms: Array<string>): void {
           nextReport = now + 1000;
         }
       }
-      startSearch(terms);
+      startSearch();
     }
   }, 0);
 }
@@ -89,7 +90,8 @@ onmessage = async (event: MessageEvent) => {
           await nano.init();
           running = true;
           nextReport = Date.now() + 1000;
-          startSearch(message.payload.terms);
+          regexp = helpers.createRegExp(message.payload.terms);
+          startSearch();
         }
         break;
       }

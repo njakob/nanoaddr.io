@@ -19,25 +19,18 @@ export function as<T>(value: mixed, type: Class<T>): T {
   throw new Error();
 }
 
-export function getScore(wallet: protocol.Wallet, terms: Array<string>): protocol.Score {
+export function getScore(wallet: protocol.Wallet, regexp: RegExp): protocol.Score {
   const { address } = wallet;
   const truncated = address.substring(5);
-  const numTerms = terms.length;
   const locations = [];
   let score = 0;
-
-  for (let i = 0; i < numTerms; i += 1) {
-    const term = terms[i];
-    if (truncated.startsWith(term)) {
-      score += term.length;
-      locations.push({ term, idx: 5 });
-    }
-    if (truncated.endsWith(term)) {
-      score += term.length;
-      locations.push({ term, idx: 64 - term.length });
-    }
+  let match = null;
+  while (match = regexp.exec(truncated)) {
+    const idx = 5 + match.index;
+    const term = match[0];
+    score += term.length;
+    locations.push({ term, idx });
   }
-
   return { value: score, locations };
 }
 
@@ -81,4 +74,13 @@ export function copyClipboard(content: string): void {
 let numberFormatter = new Intl.NumberFormat();
 export function formatNumber(value: number): string {
   return numberFormatter.format(value);
+}
+
+export function createRegExp(terms: Array<string>): RegExp {
+  const processedTerms = terms.filter((term) => {
+    return term.length <= 100 && /[a-zA-Z?.]/.test(term);
+  }).map((term) => {
+    return term.toLowerCase();
+  });
+  return new RegExp(`(^(${terms.join('|')}))|((${terms.join('|')})$)`, 'g');
 }
