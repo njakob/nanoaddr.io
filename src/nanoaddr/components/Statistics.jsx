@@ -26,6 +26,11 @@ function Statistics(props: Props) {
       <Entry>
         {props.stats.aps.toFixed(0)} <span title="Addresses per second">APS</span>
       </Entry>
+      {props.stats.estimatedDuration > helpers.MS_S * 5 && (
+        <Entry>
+          It might take {helpers.formatDurationEstimation(props.stats.estimatedDuration)} to find an address!
+        </Entry>
+      )}
       <Entry>
         {helpers.formatNumber(props.stats.addressesCount)} addreses tested
       </Entry>

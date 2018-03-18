@@ -1,10 +1,15 @@
 /* @flow */
 
 import * as React from 'react';
+import namedNumber from 'hsimp-named-number';
+import namedNumberDictionary from 'hsimp-named-number/named-number-dictionary.json';
 import * as protocol from './protocol';
+
+namedNumber.setDictionary(namedNumberDictionary);
 
 export type Stats = {
   aps: number;
+  estimatedDuration: number;
   addressesCount: number;
   ignoredMatchesCount: number;
 };
@@ -17,6 +22,26 @@ export function as<T>(value: mixed, type: Class<T>): T {
   // $FlowFixMe
   const typeName = type.name;
   throw new Error();
+}
+
+export function sanitizeTerms(terms: Array<string>): Array<string> {
+  return terms.filter((term) => {
+    return term.length <= 100 && /[a-zA-Z?.]/.test(term);
+  });
+}
+
+export function createRegExp(terms: Array<string>): RegExp {
+  const processedTerms = terms.map((term) => {
+    return term.toLowerCase();
+  });
+  return new RegExp(`(^(${terms.join('|')}))|((${terms.join('|')})$)`, 'g');
+}
+
+export function getMinSearchIterations(terms: Array<string>): number {
+  const minimalTerms = terms.map((term) => term.replace(/[.?]/, '').length);
+  minimalTerms.sort();
+  const shortestTerm = minimalTerms[0];
+  return Math.pow(32, shortestTerm) / 2;
 }
 
 export function getScore(wallet: protocol.Wallet, regexp: RegExp): protocol.Score {
@@ -76,11 +101,37 @@ export function formatNumber(value: number): string {
   return numberFormatter.format(value);
 }
 
-export function createRegExp(terms: Array<string>): RegExp {
-  const processedTerms = terms.filter((term) => {
-    return term.length <= 100 && /[a-zA-Z?.]/.test(term);
-  }).map((term) => {
-    return term.toLowerCase();
-  });
-  return new RegExp(`(^(${terms.join('|')}))|((${terms.join('|')})$)`, 'g');
+export const MS_S = 1000;
+export const MS_M = MS_S * 60;
+export const MS_H = MS_M * 60;
+export const MS_D = MS_H * 24;
+export const MS_W = MS_D * 7;
+export const MS_Y = MS_D * 365.25;
+
+function plural(ms: number, n: number, word: string): string {
+  const v = Math.round(ms / n);
+  return `${v} ${word}${v > 1 ? 's': ''}`;
+}
+
+export function formatDurationEstimation(ms: number): string {
+  if (ms >= MS_Y * 1000) {
+    const name = namedNumber(Math.round(ms / MS_Y));
+    return `${name.getName()} years`;
+  }
+  if (ms >= MS_Y) {
+    return plural(ms, MS_Y, 'year');
+  }
+  if (ms >= MS_W) {
+    return plural(ms, MS_W, 'week');
+  }
+  if (ms >= MS_D) {
+    return plural(ms, MS_D, 'day');
+  }
+  if (ms >= MS_H) {
+    return plural(ms, MS_H, 'hour');
+  }
+  if (ms >= MS_M) {
+    return plural(ms, MS_M, 'minute');
+  }
+  return plural(ms, MS_S, 'second');
 }

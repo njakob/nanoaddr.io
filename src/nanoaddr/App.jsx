@@ -116,6 +116,7 @@ class App extends React.Component<Props, State> {
   matchingSamples: Array<number> = [0];
   addressesCount = 0;
   ignoredMatchesCount = 0;
+  minIterations = 1;
 
   state = {
     running: false,
@@ -125,6 +126,7 @@ class App extends React.Component<Props, State> {
     qrCodeDialog: null,
     stats: {
       aps: 0,
+      estimatedDuration: 0,
       addressesCount: 0,
       ignoredMatchesCount: 0,
     }
@@ -168,10 +170,13 @@ class App extends React.Component<Props, State> {
     const sample = this.matchingSamples.reduce((acc, value) => acc + value, 0);
     this.matchingSamples.unshift(0);
     this.matchingSamples.splice(SAMPLES_COUNT);
+    const aps = sample / SAMPLES_COUNT;
+    const estimatedDuration = aps > 0 ? (this.minIterations / aps) * 1000 : 0;
     return {
       addressesCount: this.addressesCount,
       ignoredMatchesCount: this.ignoredMatchesCount,
-      aps: sample / SAMPLES_COUNT,
+      estimatedDuration,
+      aps,
     };
   }
 
@@ -221,10 +226,12 @@ class App extends React.Component<Props, State> {
     const newRunningState = !running;
 
     if (newRunningState) {
+      const terms = helpers.sanitizeTerms(text.split(' '));
+      this.minIterations = helpers.getMinSearchIterations(terms);
       this.postMessage({
         type: 'start',
         payload: {
-          terms: text.split(' '),
+          terms,
         },
       });
       this.interval = setInterval(() => {
