@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Address from 'nanoaddr/components/Address';
 
 const DONATION_ADDR = 'xrb_3njakob6iz67oi5cfade3etoremah35wsdei6n6qnjrdhrjgj45kwhqotc85';
+const DONATION_ADDR_HIGHLIGHTS = [{ idx: 5, term: 'njakob' }];
 
 const Container = styled.div`
   padding: 32px 0;
@@ -34,7 +35,11 @@ function Donation(props: Props) {
         <p>You found your perfect address? You can buy me a beer or share this amazing piece of tech.</p>
       </Text>
       <AddressContainer>
-        <Address value={DONATION_ADDR} onClick={() => props.onShowAddress(DONATION_ADDR)} />
+        <Address
+          value={DONATION_ADDR}
+          highlights={DONATION_ADDR_HIGHLIGHTS}
+          onClick={() => props.onShowAddress(DONATION_ADDR)}
+        />
       </AddressContainer>
     </Container>
   );
