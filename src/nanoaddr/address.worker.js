@@ -57,7 +57,7 @@ function search(): void {
   const score = helpers.getScore(wallet, regexp);
   if (score.value >= SCORE_MIN) {
     reportMatch({ wallet, score });
-  } else if (score.value === 0) {
+  } else if (score.value > 0) {
     currentIgnoredMatchesCount += 1;
   }
 }
