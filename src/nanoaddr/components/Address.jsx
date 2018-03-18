@@ -49,7 +49,7 @@ export default function Address(props: Props) {
       const highlight = sortedHighlights[i];
       const { idx, term } = highlight;
       const { length } = term;
-      elements.push(value.substr(last, idx));
+      elements.push(value.substring(last, idx));
       elements.push(<Highlight key={`${idx}_${term}`}>{value.substr(idx, length)}</Highlight>);
       last = idx + length;
     }
