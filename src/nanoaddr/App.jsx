@@ -11,6 +11,7 @@ import Input from './components/Input';
 import Address from './components/Address';
 import QRCodeDialog from './components/QRCodeDialog';
 import Offline from './components/Offline';
+import Statistics from './components/Statistics';
 import Footer from './components/Footer';
 
 const SAMPLES_COUNT = 3;
@@ -63,11 +64,6 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
-const Statistics = styled.div`
-  padding: 32px 0;
-  color: ${props => props.theme.colors.b0};
-`;
-
 const WalletList = styled.div`
   padding: 32px 0;
 `;
@@ -91,23 +87,25 @@ type State = {
   running: boolean;
   text: string;
   matches: Array<protocol.Match>;
-  aps: number;
-  total: number;
   qrCodeDialog: ?string;
+  stats: helpers.Stats;
 };
 
 class App extends React.Component<Props, State> {
   workers: Array<Worker> = [];
   interval: ?IntervalID = null;
-  samples: Array<number> = [0];
+  matchingSamples: Array<number> = [0];
+  addressesCount = 0;
 
   state = {
     running: false,
     text: '',
     matches: [],
-    aps: 0,
-    total: 0,
     qrCodeDialog: null,
+    stats: {
+      aps: 0,
+      addressesCount: 0,
+    }
   };
 
   componentWillMount() {
@@ -144,26 +142,37 @@ class App extends React.Component<Props, State> {
     this.workers.forEach(worker => worker.postMessage(message));
   }
 
+  getStats(): helpers.Stats {
+    const sample = this.matchingSamples.reduce((acc, value) => acc + value, 0);
+    this.matchingSamples.unshift(0);
+    this.matchingSamples.splice(SAMPLES_COUNT);
+    return {
+      addressesCount: this.addressesCount,
+      aps: sample / SAMPLES_COUNT,
+    };
+  }
+
   handleWorkerMessage = (event: MessageEvent) => {
     const { data } = event;
     if (data && typeof data === 'object') {
-      const appMessage = ((data: any): protocol.AppMessage);
-      switch (appMessage.type) {
+      const message = ((data: any): protocol.AppMessage);
+      switch (message.type) {
         case 'match': {
           this.setState(({
             matches: helpers.sortMatches([
               ...this.state.matches,
-              appMessage.payload.match,
+              message.payload.match,
             ]),
           }));
           break;
         }
-        case 'aps': {
-          this.samples[0] += appMessage.payload.aps;
+        case 'stats': {
+          this.addressesCount += message.payload.addresses;
+          this.matchingSamples[0] += message.payload.addresses;
           break;
         }
         default: {
-          throw new Error(`Unknown message ${String(appMessage.type)}`);
+          throw new Error(`Unknown message ${String(message.type)}`);
         }
       }
     }
@@ -192,12 +201,9 @@ class App extends React.Component<Props, State> {
         },
       });
       this.interval = setInterval(() => {
-        const sample = this.samples.reduce((acc, value) => acc + value, 0);
-        this.samples.unshift(0);
-        this.samples.splice(SAMPLES_COUNT);
-        this.setState({
-          aps: sample / SAMPLES_COUNT,
-        });
+        this.setState(() => ({
+          stats: this.getStats(),
+        }));
       }, 1000);
       this.setState({
         running: newRunningState,
@@ -210,11 +216,11 @@ class App extends React.Component<Props, State> {
         clearInterval(this.interval);
         this.interval = null;
       }
-      this.samples = [0];
-      this.setState({
+      this.matchingSamples = [0];
+      this.setState(() => ({
         running: newRunningState,
-        aps: 0,
-      });
+        stats: this.getStats(),
+      }));
     }
   }
 
@@ -275,9 +281,7 @@ class App extends React.Component<Props, State> {
               {this.state.running ? 'Stop' : 'Generate'}
             </Button>
           </ButtonContainer>
-          <Statistics>
-            {this.state.aps.toFixed(0)} APS
-          </Statistics>
+          <Statistics stats={this.state.stats} />
           <WalletList>
             {this.state.matches.map((match) => (
               <Wallet key={match.wallet.address}>

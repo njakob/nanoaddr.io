@@ -3,6 +3,11 @@
 import * as React from 'react';
 import * as protocol from './protocol';
 
+export type Stats = {
+  aps: number;
+  addressesCount: number;
+};
+
 export function as<T>(value: mixed, type: Class<T>): T {
   if (value instanceof type) {
     return value;
@@ -70,4 +75,9 @@ export function copyClipboard(content: string): void {
     document.execCommand('copy');
     textarea.remove();
   }
+}
+
+let numberFormatter = new Intl.NumberFormat();
+export function formatNumber(value: number): string {
+  return numberFormatter.format(value);
 }

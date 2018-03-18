@@ -8,15 +8,15 @@ const BATCH_SIZE = 8000;
 const SCORE_MIN = 3;
 
 let running = false;
-let count = 0;
-let nextReport: number;
+let currentAddressesCount = 0;
+let nextReport = 0;
 
-function reportAPS(aps: number): void {
+function reportStats(addresses: number): void {
   // $FlowFixMe
   postMessage({
-    type: 'aps',
+    type: 'stats',
     payload: {
-      aps,
+      addresses,
     },
   });
 }
@@ -32,7 +32,7 @@ function reportMatch(match: protocol.Match): void {
 }
 
 function search(terms: Array<string>): void {
-  count += 1;
+  currentAddressesCount += 1;
 
   const array = new Uint8Array(32);
   self.crypto.getRandomValues(array);
@@ -64,8 +64,8 @@ function startSearch(terms: Array<string>): void {
         search(terms);
         const now = Date.now();
         if (now > nextReport) {
-          reportAPS(count);
-          count = 0;
+          reportStats(currentAddressesCount);
+          currentAddressesCount = 0;
           nextReport = now + 1000;
         }
       }
@@ -74,25 +74,29 @@ function startSearch(terms: Array<string>): void {
   }, 0);
 }
 
-onmessage = async (event) => {
-  switch (event.data.type) {
-    case 'start': {
-      if (!running) {
-        await nano.init();
-        running = true;
-        nextReport = Date.now() + 1000;
-        startSearch(event.data.payload.terms);
+onmessage = async (event: MessageEvent) => {
+  const { data } = event;
+  if (data && typeof data === 'object') {
+    const message = ((data: any): protocol.WorkerMessage);
+    switch (message.type) {
+      case 'start': {
+        if (!running) {
+          await nano.init();
+          running = true;
+          nextReport = Date.now() + 1000;
+          startSearch(message.payload.terms);
+        }
+        break;
       }
-      break;
-    }
 
-    case 'stop': {
-      running = false;
-      break;
-    }
+      case 'stop': {
+        running = false;
+        break;
+      }
 
-    default: {
-      throw new Error(`Unknown message ${String(event.data.type)}`);
+      default: {
+        throw new Error(`Unknown message ${String(message.type)}`);
+      }
     }
   }
 }

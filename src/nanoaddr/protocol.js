@@ -33,16 +33,16 @@ export type MatchAppMessage = {
   };
 };
 
-export type APSAppMessage = {
-  type: 'aps';
+export type StatsAppMessage = {
+  type: 'stats';
   payload: {
-    aps: number;
+    addresses: number;
   };
 };
 
 export type AppMessage =
   | MatchAppMessage
-  | APSAppMessage
+  | StatsAppMessage
   ;
 
 export type AppMessageEvent = MessageEvent & {
