@@ -15,6 +15,7 @@ import Statistics from './components/Statistics';
 import Footer from './components/Footer';
 
 const SAMPLES_COUNT = 3;
+const UNAVAILABLE_CHARS = ['0', '2', 'l', 'v'];
 
 const Wrapper = styled.div`
   position: relative;
@@ -64,6 +65,14 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
+const Warning = styled.div`
+  padding: 32px 60px;
+  font-size: 16px;
+  text-align: center;
+  max-width: 800px;
+  color: red;
+`;
+
 const WalletList = styled.div`
   padding: 32px 0;
 `;
@@ -85,6 +94,7 @@ type Props = {};
 
 type State = {
   running: boolean;
+  unavailableCharsWarning: boolean;
   text: string;
   matches: Array<protocol.Match>;
   qrCodeDialog: ?string;
@@ -99,6 +109,7 @@ class App extends React.Component<Props, State> {
 
   state = {
     running: false,
+    unavailableCharsWarning: false,
     text: '',
     matches: [],
     qrCodeDialog: null,
@@ -180,7 +191,10 @@ class App extends React.Component<Props, State> {
 
   handleTextChange = (event: Event) => {
     const inputElement = helpers.as(event.target, HTMLInputElement);
+    const { value: text } = inputElement;
+    const unavailableCharsWarning = UNAVAILABLE_CHARS.some((char) => text.includes(char));
     this.setState({
+      unavailableCharsWarning,
       text: inputElement.value,
     });
   }
@@ -281,6 +295,11 @@ class App extends React.Component<Props, State> {
               {this.state.running ? 'Stop' : 'Generate'}
             </Button>
           </ButtonContainer>
+          {this.state.unavailableCharsWarning && (
+            <Warning>
+              <p>You entered some terms that contain some of the letters {UNAVAILABLE_CHARS.map((char) => <code key={char}>{char}</code>)} and they seems to not be available in Nano addresses.</p>
+            </Warning>
+          )}
           <Statistics stats={this.state.stats} />
           <WalletList>
             {this.state.matches.map((match) => (
