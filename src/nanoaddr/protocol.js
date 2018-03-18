@@ -37,6 +37,7 @@ export type StatsAppMessage = {
   type: 'stats';
   payload: {
     addresses: number;
+    ignoredMatches: number;
   };
 };
 

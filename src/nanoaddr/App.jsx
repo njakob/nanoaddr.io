@@ -65,7 +65,7 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
-const Warning = styled.div`
+const InputWarning = styled.div`
   padding: 32px 60px;
   font-size: 16px;
   text-align: center;
@@ -75,6 +75,14 @@ const Warning = styled.div`
 
 const WalletList = styled.div`
   padding: 32px 0;
+`;
+
+const ScoreWarning = styled.div`
+  font-size: 16px;
+  font-style: italic;
+  text-align: center;
+  padding: 6px 0;
+  color: ${props => props.theme.colors.g1};
 `;
 
 const Wallet = styled.div`
@@ -106,6 +114,7 @@ class App extends React.Component<Props, State> {
   interval: ?IntervalID = null;
   matchingSamples: Array<number> = [0];
   addressesCount = 0;
+  ignoredMatchesCount = 0;
 
   state = {
     running: false,
@@ -116,6 +125,7 @@ class App extends React.Component<Props, State> {
     stats: {
       aps: 0,
       addressesCount: 0,
+      ignoredMatchesCount: 0,
     }
   };
 
@@ -159,6 +169,7 @@ class App extends React.Component<Props, State> {
     this.matchingSamples.splice(SAMPLES_COUNT);
     return {
       addressesCount: this.addressesCount,
+      ignoredMatchesCount: this.ignoredMatchesCount,
       aps: sample / SAMPLES_COUNT,
     };
   }
@@ -179,6 +190,7 @@ class App extends React.Component<Props, State> {
         }
         case 'stats': {
           this.addressesCount += message.payload.addresses;
+          this.ignoredMatchesCount += message.payload.ignoredMatches;
           this.matchingSamples[0] += message.payload.addresses;
           break;
         }
@@ -296,12 +308,17 @@ class App extends React.Component<Props, State> {
             </Button>
           </ButtonContainer>
           {this.state.unavailableCharsWarning && (
-            <Warning>
+            <InputWarning>
               <p>You entered some terms that contain some of the letters {UNAVAILABLE_CHARS.map((char) => <code key={char}>{char}</code>)} and they seems to not be available in Nano addresses.</p>
-            </Warning>
+            </InputWarning>
           )}
           <Statistics stats={this.state.stats} />
           <WalletList>
+            {this.state.stats.ignoredMatchesCount > 0 && (
+              <ScoreWarning>
+                {helpers.formatNumber(this.state.stats.ignoredMatchesCount)} addresses partially matched however they had a very low score.
+              </ScoreWarning>
+            )}
             {this.state.matches.map((match) => (
               <Wallet key={match.wallet.address}>
                 <WalletColumn>

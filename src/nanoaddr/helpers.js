@@ -6,6 +6,7 @@ import * as protocol from './protocol';
 export type Stats = {
   aps: number;
   addressesCount: number;
+  ignoredMatchesCount: number;
 };
 
 export function as<T>(value: mixed, type: Class<T>): T {

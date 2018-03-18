@@ -9,14 +9,16 @@ const SCORE_MIN = 3;
 
 let running = false;
 let currentAddressesCount = 0;
+let currentIgnoredMatchesCount = 0;
 let nextReport = 0;
 
-function reportStats(addresses: number): void {
+function reportStats(addresses: number, ignoredMatches: number): void {
   // $FlowFixMe
   postMessage({
     type: 'stats',
     payload: {
       addresses,
+      ignoredMatches,
     },
   });
 }
@@ -54,6 +56,8 @@ function search(terms: Array<string>): void {
   const score = helpers.getScore(wallet, terms);
   if (score.value >= SCORE_MIN) {
     reportMatch({ wallet, score });
+  } else if (score.value === 0) {
+    currentIgnoredMatchesCount += 1;
   }
 }
 
@@ -64,8 +68,9 @@ function startSearch(terms: Array<string>): void {
         search(terms);
         const now = Date.now();
         if (now > nextReport) {
-          reportStats(currentAddressesCount);
+          reportStats(currentAddressesCount, currentIgnoredMatchesCount);
           currentAddressesCount = 0;
+          currentIgnoredMatchesCount = 0;
           nextReport = now + 1000;
         }
       }
