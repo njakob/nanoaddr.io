@@ -10,6 +10,7 @@ import Button from './components/Button';
 import Input from './components/Input';
 import Address from './components/Address';
 import QRCodeDialog from './components/QRCodeDialog';
+import Posts from './components/Posts';
 import Offline from './components/Offline';
 import Statistics from './components/Statistics';
 import Footer from './components/Footer';
@@ -349,6 +350,7 @@ class App extends React.Component<Props, State> {
               </Wallet>
             ))}
           </WalletList>
+          <Posts />
           <Footer onShowAddress={this.handleShowAddress} />
         </Container>
         {this.state.qrCodeDialog && (
