@@ -108,9 +108,13 @@ export const MS_D = MS_H * 24;
 export const MS_W = MS_D * 7;
 export const MS_Y = MS_D * 365.25;
 
-function plural(ms: number, n: number, word: string): string {
-  const v = Math.round(ms / n);
-  return `${v} ${word}${v > 1 ? 's': ''}`;
+export function plural(n: number, text1: string, textn: string): string {
+  return n > 1 ? textn : text1;
+}
+
+function formatDurationWord(ms: number, ref: number, word1: string, wordn: string): string {
+  const value = Math.round(ms / ref);
+  return `${value} ${plural(value, word1, wordn)}`;
 }
 
 export function formatDurationEstimation(ms: number): string {
@@ -119,19 +123,19 @@ export function formatDurationEstimation(ms: number): string {
     return `${name.getName()} years`;
   }
   if (ms >= MS_Y) {
-    return plural(ms, MS_Y, 'year');
+    return formatDurationWord(ms, MS_Y, 'year', 'years');
   }
   if (ms >= MS_W) {
-    return plural(ms, MS_W, 'week');
+    return formatDurationWord(ms, MS_W, 'week', 'weeks');
   }
   if (ms >= MS_D) {
-    return plural(ms, MS_D, 'day');
+    return formatDurationWord(ms, MS_D, 'day', 'days');
   }
   if (ms >= MS_H) {
-    return plural(ms, MS_H, 'hour');
+    return formatDurationWord(ms, MS_H, 'hour', 'hours');
   }
   if (ms >= MS_M) {
-    return plural(ms, MS_M, 'minute');
+    return formatDurationWord(ms, MS_M, 'minute', 'minutes');
   }
-  return plural(ms, MS_S, 'second');
+  return formatDurationWord(ms, MS_S, 'second', 'seconds');
 }

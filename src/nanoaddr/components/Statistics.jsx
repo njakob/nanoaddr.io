@@ -32,7 +32,7 @@ function Statistics(props: Props) {
         </Entry>
       )}
       <Entry>
-        {helpers.formatNumber(props.stats.addressesCount)} addreses tested
+        {helpers.formatNumber(props.stats.addressesCount)} {helpers.plural(props.stats.addressesCount, 'address', 'addresses')} tested
       </Entry>
     </Container>
   );
