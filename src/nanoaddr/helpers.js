@@ -26,7 +26,7 @@ export function as<T>(value: mixed, type: Class<T>): T {
 
 export function sanitizeTerms(terms: Array<string>): Array<string> {
   return terms.filter((term) => {
-    return term.length <= 100 && /[a-zA-Z?.]/.test(term);
+    return term.length <= 100 && /^([a-z?.]|\\d)+$/i.test(term);
   });
 }
 
@@ -38,7 +38,7 @@ export function createRegExp(terms: Array<string>): RegExp {
 }
 
 export function getMinSearchIterations(terms: Array<string>): number {
-  const minimalTerms = terms.map((term) => term.replace(/[.?]/, '').length);
+  const minimalTerms = terms.map((term) => term.replace(/[.?]|\\d/, '').length);
   minimalTerms.sort();
   const shortestTerm = minimalTerms[0];
   return Math.pow(32, shortestTerm) / 2;
