@@ -10,6 +10,7 @@ import Button from './components/Button';
 import Input from './components/Input';
 import Address from './components/Address';
 import QRCodeDialog from './components/QRCodeDialog';
+import Concurrency from './components/Concurrency';
 import Posts from './components/Posts';
 import Offline from './components/Offline';
 import Statistics from './components/Statistics';
@@ -103,6 +104,7 @@ type Props = {};
 
 type State = {
   running: boolean;
+  concurrencyFactor: number;
   unavailableCharsWarning: boolean;
   text: string;
   matches: Array<protocol.Match>;
@@ -117,9 +119,11 @@ class App extends React.Component<Props, State> {
   addressesCount = 0;
   ignoredMatchesCount = 0;
   minIterations = 1;
+  numWorkers = 0;
 
   state = {
     running: false,
+    concurrencyFactor: 1,
     unavailableCharsWarning: false,
     text: '',
     matches: [],
@@ -158,12 +162,18 @@ class App extends React.Component<Props, State> {
           worker.onmessage = this.handleWorkerMessage;
           this.workers.push(worker);
         }
+        this.setWorkerConcurrency(1);
       });
     }
   }
 
+  setWorkerConcurrency(factor: number) {
+    const cores = helpers.getHardwareConcurrency();
+    this.numWorkers = Math.max(1, Math.floor(factor * cores));
+  }
+
   postMessage(message: protocol.WorkerMessage) {
-    this.workers.forEach(worker => worker.postMessage(message));
+    this.workers.filter((worker, idx) => idx < this.numWorkers).forEach(worker => worker.postMessage(message));
   }
 
   getStats(): helpers.Stats {
@@ -178,6 +188,15 @@ class App extends React.Component<Props, State> {
       estimatedDuration,
       aps,
     };
+  }
+
+  handleConcurrencyFactorChange = (factor: number) => {
+    if (!this.state.running) {
+      this.setWorkerConcurrency(factor);
+      this.setState({
+        concurrencyFactor: factor,
+      });
+    }
   }
 
   handleWorkerMessage = (event: MessageEvent) => {
@@ -302,6 +321,7 @@ class App extends React.Component<Props, State> {
           <Description>
             <p>The addresses and private keys are generated directly in your bowser without the involvment of any servers and are not transmitted over the Internet. For additional security we still recommend that you disconnect your computer from the Internet while using this site.</p>
           </Description>
+          <Concurrency currentFactor={this.state.concurrencyFactor} onFactorChange={this.handleConcurrencyFactorChange} />
           <ButtonContainer>
             <InputContainer>
               <Input
