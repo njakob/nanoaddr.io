@@ -303,21 +303,21 @@ class App extends React.Component<Props, State> {
     return (
       <Wrapper>
         <Helmet>
-          <title>Nano Addr</title>
+          <title>NanoAddr - Vanity Nano address generator in your browser</title>
           <link rel="canonical" href="https://nanoaddr.io/" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="author" content="Nicolas Jakob" />
-          <meta name="description" content="Vanity Nano address generator that works offline in your browser" />
-          <meta property="og:title" content="Nano Addr - Find your personalized Nano address" />
+          <meta name="description" content="NanoAddr is a vanity address generator for the cryptocurrency Nano that works offline in your browser" />
+          <meta property="og:title" content="NanoAddr - Find your personalized Nano address" />
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://nanoaddr.io/" />
-          <meta property="og:site_name" content="Nano Addr" />
-          <meta property="og:description" content="Vanity Nano address generator that works offline in your browser" />
+          <meta property="og:site_name" content="NanoAddr" />
+          <meta property="og:description" content="NanoAddr is a vanity address generator for the cryptocurrency Nano that works offline in your browser" />
         </Helmet>
         <Offline />
         <Container>
-          <Title>Nano Addr</Title>
-          <Meta>Find your perfect Nano address</Meta>
+          <Title>NanoAddr</Title>
+          <Meta>This service provide a simple way to find your personalized Nano address directly into your browser</Meta>
           <Description>
             <p>The addresses and private keys are generated directly in your bowser without the involvment of any servers and are not transmitted over the Internet. For additional security we still recommend that you disconnect your computer from the Internet while using this site.</p>
           </Description>

@@ -15,7 +15,7 @@ const articles = [
   {
     title: 'What is Nano?',
     content: (
-      <p><Link href={URL_NANO}>Nano</Link> is a cryptocurrency that provides in instant, feeless transactions. Nano has been previously know as RaiBlocks.</p>
+      <p><Link href={URL_NANO}>Nano</Link> (XRB) is a cryptocurrency that provides in instant, feeless transactions. Nano has been previously know as RaiBlocks.</p>
     ),
   },
   {
