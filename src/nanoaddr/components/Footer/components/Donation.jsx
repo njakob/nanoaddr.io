@@ -12,6 +12,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 `
 
 const Text = styled.div`
@@ -22,6 +23,8 @@ const Text = styled.div`
 
 const AddressContainer = styled.div`
   padding: 16px 0;
+  width: 100%;
+  text-align: center;
 `
 
 type Props = {

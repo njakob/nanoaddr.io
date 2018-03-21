@@ -31,14 +31,21 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 100px;
   flex: 1 1;
+
+  @media (min-width: 0px) {
+    padding: 60px 20px;
+  }
+  @media (min-width: 576px) {
+    padding: 60px 100px;
+  }
 `;
 
 const Title = styled.h1`
   margin: 0;
   padding: 6px 0;
   font-size: 32px;
+  text-align: center;
   color: ${props => props.theme.colors.b0};
 `;
 
@@ -46,11 +53,12 @@ const Meta = styled.p`
   margin: 0;
   padding: 6px 0;
   font-size: 20px;
+  text-align: center;
   color: ${props => props.theme.colors.b0};
 `;
 
 const Description = styled.div`
-  padding: 32px 60px;
+  padding: 32px 0;
   font-size: 16px;
   text-align: center;
   max-width: 800px;

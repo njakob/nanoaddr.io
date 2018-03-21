@@ -7,6 +7,7 @@ import * as helpers from 'nanoaddr/helpers';
 
 const Container = styled.code`
   font-size: 16px;
+  overflow-wrap: break-word;
   color: ${props => props.theme.colors.b0};
 
   ${props => props.onClick && css`
