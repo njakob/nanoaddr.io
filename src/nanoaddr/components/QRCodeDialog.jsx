@@ -6,7 +6,7 @@ import QRCode from 'qrcode.react';
 import * as protocol from 'nanoaddr/protocol';
 
 const Backdrop = styled.div`
-  position: absolute;
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
