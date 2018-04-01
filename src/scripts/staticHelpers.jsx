@@ -30,12 +30,37 @@ export function renderContent(config: utils.Config, clientStats: Object): Promis
     clientStats.assetsByChunkName['app'],
   ];
 
+  const manifestAssets = clientStats.assets.filter(({ name }) => /^manifest\./.test(name));
+  const iconAssets = clientStats.assets.filter(({ name }) => /^icon_/.test(name));
+
+  const links = [];
+
+  if (manifestAssets.length > 0) {
+    links.push({
+      rel: 'manifest',
+      href: path.join('/', manifestAssets[0].name),
+    });
+  }
+
+  iconAssets.forEach((asset) => {
+    const [,sizes] = /^icon_(\d+x\d+)/.exec(asset.name);
+    links.push({
+      rel: 'icon',
+      type: 'image/png',
+      sizes,
+      href: path.join('/', asset.name),
+    });
+  });
+
   const Document = () => (
     <html lang="en" {...htmlAttrs}>
       <head>
         {helmet.title.toComponent()}
         {helmet.meta.toComponent()}
         {helmet.link.toComponent()}
+        {links.map(link => (
+          <link key={link.href} {...link} />
+        ))}
         {scripts.map(script => (
           <link
             key={script}
