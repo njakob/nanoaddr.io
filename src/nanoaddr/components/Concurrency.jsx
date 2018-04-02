@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
-import FakeLink from 'nanoaddr/components/FakeLink';
-import * as helpers from 'nanoaddr/helpers';
 import Button from 'nanoaddr/components/Button';
 
 const Container = styled.div`
@@ -29,12 +27,17 @@ type Props = {
 };
 
 function Concurrency(props: Props) {
+  const {
+    currentFactor,
+    onFactorChange,
+  } = props;
+
   return (
     <Container>
       <Label>Speed</Label>
-      {[0.25, 0.5, 1].map((factor) => (
+      {[0.25, 0.5, 1].map(factor => (
         <Entry key={String(factor)}>
-          <Button disabled={factor === props.currentFactor} onClick={() => props.onFactorChange(factor)}>
+          <Button disabled={factor === currentFactor} onClick={() => onFactorChange(factor)}>
             {Math.floor(factor * 100)}%
           </Button>
         </Entry>

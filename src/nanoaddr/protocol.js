@@ -43,12 +43,11 @@ export type StatsAppMessage = {
 
 export type AppMessage =
   | MatchAppMessage
-  | StatsAppMessage
-  ;
+  | StatsAppMessage;
 
 export type AppMessageEvent = MessageEvent & {
   data: AppMessage;
-}
+};
 
 /**
  * Worker Message Protocol
@@ -67,5 +66,4 @@ export type StopWorkerMessage = {
 
 export type WorkerMessage =
   | StartWorkerMessage
-  | StopWorkerMessage
-  ;
+  | StopWorkerMessage;

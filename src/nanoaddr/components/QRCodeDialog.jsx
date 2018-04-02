@@ -1,9 +1,8 @@
 /* @flow */
 
 import * as React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import QRCode from 'qrcode.react';
-import * as protocol from 'nanoaddr/protocol';
 
 const Backdrop = styled.div`
   position: fixed;

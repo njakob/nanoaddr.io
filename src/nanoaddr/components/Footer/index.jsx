@@ -11,7 +11,7 @@ const Container = styled.footer`
   display: flex;
   align-items: center;
   flex-direction: column;
-`
+`;
 
 type Props = {
   onShowAddress: (address: string) => void;

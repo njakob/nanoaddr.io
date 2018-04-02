@@ -9,12 +9,13 @@ import Helmet from 'react-helmet';
 import * as utils from 'scripts/utils';
 
 export function renderContent(config: utils.Config, clientStats: Object): Promise<*> {
-  const chunkNames = [];
-
+  /* eslint-disable no-underscore-dangle */
   global.__BROWSER__ = false;
   global.__DEV__ = false;
   global.__VERSION__ = config.version;
+  /* eslint-enable no-underscore-dangle */
 
+  // eslint-disable-next-line global-require
   const App = require('nanoaddr/index').default;
 
   const sheet = new ServerStyleSheet();
@@ -26,8 +27,8 @@ export function renderContent(config: utils.Config, clientStats: Object): Promis
   const bodyAttrs = helmet.bodyAttributes.toComponent();
 
   const scripts = [
-    clientStats.assetsByChunkName['vendors'],
-    clientStats.assetsByChunkName['app'],
+    clientStats.assetsByChunkName.vendors,
+    clientStats.assetsByChunkName.app,
   ];
 
   const manifestAssets = clientStats.assets.filter(({ name }) => /^manifest\./.test(name));
@@ -43,7 +44,7 @@ export function renderContent(config: utils.Config, clientStats: Object): Promis
   }
 
   iconAssets.forEach((asset) => {
-    const [,sizes] = /^icon_(\d+x\d+)/.exec(asset.name);
+    const [, sizes] = /^icon_(\d+x\d+)/.exec(asset.name);
     links.push({
       rel: 'icon',
       type: 'image/png',
@@ -72,7 +73,9 @@ export function renderContent(config: utils.Config, clientStats: Object): Promis
         {styleTags}
       </head>
       <body {...bodyAttrs}>
+        {/* eslint-disable react/no-danger */}
         <div id="root" dangerouslySetInnerHTML={{ __html: applicationHtml }} />
+        {/* eslint-enable react/no-danger */}
         {scripts.map(script => (
           <script
             key={script}
@@ -85,7 +88,7 @@ export function renderContent(config: utils.Config, clientStats: Object): Promis
     </html>
   );
 
-  let html = `<!DOCTYPE html>${ReactDOMServer.renderToString(<Document />)}`;
+  const html = `<!DOCTYPE html>${ReactDOMServer.renderToString(<Document />)}`;
 
   return fs.outputFile(path.join(config.paths.build, 'index.html'), html);
 }

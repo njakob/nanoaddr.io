@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
-import FakeLink from 'nanoaddr/components/FakeLink';
 import * as helpers from 'nanoaddr/helpers';
 
 const Container = styled.div`
@@ -26,7 +25,7 @@ function Statistics(props: Props) {
       <Entry>
         {props.stats.aps.toFixed(0)} <span title="Addresses per second">APS</span>
       </Entry>
-      {props.stats.estimatedDuration > helpers.MS_S * 5 && (
+      {(props.stats.estimatedDuration > helpers.MS_S * 5) && (
         <Entry>
           It might take {helpers.formatDurationEstimation(props.stats.estimatedDuration)} to find an address!
         </Entry>

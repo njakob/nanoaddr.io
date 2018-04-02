@@ -13,27 +13,28 @@ const Container = styled.code`
   ${props => props.onClick && css`
     cursor: pointer;
   `}
-`
+`;
 const Highlight = styled.span`
   color: ${props => props.theme.colors.b1};
-`
+`;
 
 type Props = {
   value: string;
+  // eslint-disable-next-line react/require-default-props
   highlights?: ?Array<protocol.Location>;
   onClick: MouseEventHandler;
-}
+};
 
 export default function Address(props: Props) {
   const {
     value,
-    highlights,
+    highlights = [],
     onClick,
   } = props;
 
   function handleClick(evt: MouseEvent) {
     helpers.copyClipboard(value);
-    props.onClick(evt);
+    onClick(evt);
   }
 
   function renderText() {

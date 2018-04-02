@@ -9,16 +9,16 @@ const Container = styled.div`
   max-width: 800px;
   color: ${props => props.theme.colors.g1};
   user-select: none;
-`
+`;
 
 const Header = styled.div`
   text-align: center;
-`
+`;
 
 const Content = styled.div`
   padding: 16px 0;
   text-align: center;
-`
+`;
 
 type State = {
   shown: boolean;
@@ -43,6 +43,7 @@ class Disclaimer extends React.Component<{}, State> {
         </Header>
         {this.state.shown && (
           <Content>
+            {/* eslint-disable-next-line max-len */}
             Nanoaddr.io does not provide any warranty for the displayed content and will not be held responsible should the use of the provided content result in any loss or damages.
           </Content>
         )}

@@ -8,6 +8,7 @@ module.exports = {
     '@babel/plugin-syntax-dynamic-import',
     '@babel/plugin-proposal-class-properties',
     '@babel/plugin-proposal-object-rest-spread',
+    '@babel/plugin-transform-exponentiation-operator',
     'babel-plugin-dynamic-import-node',
     ['babel-plugin-module-resolver', {
       root: ['./src'],

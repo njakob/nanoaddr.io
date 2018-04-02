@@ -1,16 +1,16 @@
 /* @flow */
 
-import path from 'path';
-import * as fs from 'fs-extra';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import * as utils from 'scripts/utils';
 
 function getWebpackConfig(config: utils.Config, env: utils.Env): Object {
   switch (env) {
-    case 'development': {};
+    case 'development':
+      // eslint-disable-next-line global-require
       return require('./configs/development').default(config);
     case 'production':
+      // eslint-disable-next-line global-require
       return require('./configs/production').default(config);
     default:
       throw new Error('Invalid environment');

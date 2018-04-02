@@ -1,8 +1,8 @@
 /* @flow */
 
 import * as nano from 'nanocurrency';
-import * as protocol from './protocol';
-import * as helpers from './helpers';
+import * as protocol from 'nanoaddr/protocol';
+import * as helpers from 'nanoaddr/helpers';
 
 const BATCH_SIZE = 8000;
 const SCORE_MIN = 3;
@@ -38,10 +38,9 @@ function search(): void {
   currentAddressesCount += 1;
 
   const array = new Uint8Array(32);
+  // eslint-disable-next-line no-restricted-globals
   self.crypto.getRandomValues(array);
-  const seed = array.reduce((hex, idx) => {
-    return hex + ('0' + idx.toString(16)).slice(-2);
-  }, '');
+  const seed = array.reduce((hex, idx) => hex + (`0${idx.toString(16)}`).slice(-2), '');
 
   const secretKey = nano.deriveSecretKey(seed, 0);
   const publicKey = nano.derivePublicKey(secretKey);
@@ -106,4 +105,4 @@ onmessage = async (event: MessageEvent) => {
       }
     }
   }
-}
+};

@@ -1,6 +1,5 @@
 /* @flow */
 
-import * as React from 'react';
 import namedNumber from 'hsimp-named-number';
 import namedNumberDictionary from 'hsimp-named-number/named-number-dictionary.json';
 import * as protocol from './protocol';
@@ -19,29 +18,22 @@ export function as<T>(value: mixed, type: Class<T>): T {
     return value;
   }
 
-  // $FlowFixMe
-  const typeName = type.name;
   throw new Error();
 }
 
 export function sanitizeTerms(terms: Array<string>): Array<string> {
-  return terms.filter((term) => {
-    return term.length <= 100 && /^([a-z?.]|\\d)+$/i.test(term);
-  });
+  return terms.filter(term => term.length <= 100 && /^([a-z?.]|\\d)+$/i.test(term));
 }
 
 export function createRegExp(terms: Array<string>): RegExp {
-  const processedTerms = terms.map((term) => {
-    return term.toLowerCase();
-  });
   return new RegExp(`(^(${terms.join('|')}))|((${terms.join('|')})$)`, 'g');
 }
 
 export function getMinSearchIterations(terms: Array<string>): number {
-  const minimalTerms = terms.map((term) => term.replace(/[.?]|\\d/, '').length);
+  const minimalTerms = terms.map(term => term.replace(/[.?]|\\d/, '').length);
   minimalTerms.sort();
   const shortestTerm = minimalTerms[0];
-  return Math.pow(32, shortestTerm) / 2;
+  return (32 ** shortestTerm) / 2;
 }
 
 export function getScore(wallet: protocol.Wallet, regexp: RegExp): protocol.Score {
@@ -50,6 +42,7 @@ export function getScore(wallet: protocol.Wallet, regexp: RegExp): protocol.Scor
   const locations = [];
   let score = 0;
   let match = null;
+  // eslint-disable-next-line no-cond-assign
   while (match = regexp.exec(truncated)) {
     const idx = 5 + match.index;
     const term = match[0];
@@ -75,7 +68,7 @@ export function downloadContent(content: string, filename: string): void {
   element.setAttribute('download', filename);
   element.style.display = 'none';
 
-  const body = document.body;
+  const { body } = document;
   if (body) {
     body.appendChild(element);
     element.click();
@@ -87,7 +80,7 @@ export function copyClipboard(content: string): void {
   const textarea = document.createElement('textarea');
   textarea.setAttribute('type', 'hidden');
   textarea.textContent = content;
-  const body = document.body;
+  const { body } = document;
   if (body) {
     body.appendChild(textarea);
     textarea.select();
@@ -96,7 +89,7 @@ export function copyClipboard(content: string): void {
   }
 }
 
-let numberFormatter = new Intl.NumberFormat();
+const numberFormatter = new Intl.NumberFormat();
 export function formatNumber(value: number): string {
   return numberFormatter.format(value);
 }

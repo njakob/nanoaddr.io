@@ -1,6 +1,5 @@
 /* @flow */
 
-import path from 'path';
 import * as fs from 'fs-extra';
 import * as utils from 'scripts/utils';
 import * as staticHelpers from 'scripts/staticHelpers';
@@ -13,6 +12,7 @@ export default async function build(): Promise<*> {
     const clientStats = await webpackHelpers.buildProductionBundle(config);
     await staticHelpers.renderContent(config, clientStats);
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err);
     process.exit(1);
   }

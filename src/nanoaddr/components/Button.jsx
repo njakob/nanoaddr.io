@@ -15,10 +15,10 @@ export default styled.button`
 
   ${props => !props.disabled && css`
     cursor: pointer;
-    background: ${props => props.theme.colors.b1};
+    background: ${props.theme.colors.b1};
   `}
   ${props => props.disabled && css`
-    background: ${props => props.theme.colors.g1};
+    background: ${props.theme.colors.g1};
   `}
 
   ${props => props.small && css`

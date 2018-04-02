@@ -1,8 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
-import { injectGlobal } from 'styled-components';
-import styled from 'styled-components';
+import styled, { injectGlobal } from 'styled-components';
 import * as protocol from './protocol';
 import * as helpers from './helpers';
 import Button from './components/Button';
@@ -156,12 +155,13 @@ class Main extends React.Component<Props, State> {
         padding: 0;
         margin: 0;
       }
-    `
+    `;
   }
 
   componentDidMount() {
     if (__BROWSER__) {
-      import(/* webpackChunkName: "address-worker" */ 'nanoaddr/address.worker').then((AddressWorker) => {
+      // eslint-disable-next-line no-inline-comments
+      import(/* webpackChunkName: "worker" */ 'nanoaddr/worker/index.worker.js').then((AddressWorker) => {
         const cores = helpers.getHardwareConcurrency();
         for (let i = 0; i < cores; i += 1) {
           // $FlowFixMe
@@ -236,7 +236,7 @@ class Main extends React.Component<Props, State> {
   handleTextChange = (event: Event) => {
     const inputElement = helpers.as(event.target, HTMLInputElement);
     const { value: text } = inputElement;
-    const unavailableCharsWarning = UNAVAILABLE_CHARS.some((char) => text.includes(char));
+    const unavailableCharsWarning = UNAVAILABLE_CHARS.some(char => text.includes(char));
     this.setState({
       unavailableCharsWarning,
       text: inputElement.value,
@@ -312,11 +312,18 @@ class Main extends React.Component<Props, State> {
         <Offline />
         <Container>
           <Title>NanoAddr</Title>
-          <Meta>This service provide a simple way to find your personalized Nano address directly into your browser</Meta>
+          <Meta>
+            {/* eslint-disable-next-line max-len */}
+            This service provide a simple way to find your personalized Nano address directly into your browser
+          </Meta>
           <Description>
+            {/* eslint-disable-next-line max-len */}
             <p>The addresses and private keys are generated directly in your bowser without the involvment of any servers and are not transmitted over the Internet. For additional security we still recommend that you disconnect your computer from the Internet while using this site.</p>
           </Description>
-          <Concurrency currentFactor={this.state.concurrencyFactor} onFactorChange={this.handleConcurrencyFactorChange} />
+          <Concurrency
+            currentFactor={this.state.concurrencyFactor}
+            onFactorChange={this.handleConcurrencyFactorChange}
+          />
           <ButtonContainer>
             <InputContainer>
               <Input
@@ -332,17 +339,19 @@ class Main extends React.Component<Props, State> {
           </ButtonContainer>
           {this.state.unavailableCharsWarning && (
             <InputWarning>
-              <p>You entered some terms that contain some of the letters {UNAVAILABLE_CHARS.map((char) => <code key={char}>{char}</code>)} and they seems to not be available in Nano addresses.</p>
+              {/* eslint-disable-next-line max-len */}
+              <p>You entered some terms that contain some of the letters {UNAVAILABLE_CHARS.map(char => <code key={char}>{char}</code>)} and they seems to not be available in Nano addresses.</p>
             </InputWarning>
           )}
           <Statistics stats={this.state.stats} />
           <WalletList>
             {this.state.stats.ignoredMatchesCount > 0 && (
               <ScoreWarning>
+                {/* eslint-disable-next-line max-len */}
                 {helpers.formatNumber(this.state.stats.ignoredMatchesCount)} addresses partially matched however they had a very low score.
               </ScoreWarning>
             )}
-            {this.state.matches.map((match) => (
+            {this.state.matches.map(match => (
               <Wallet key={match.wallet.address}>
                 <WalletColumn>
                   <Address

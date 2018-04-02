@@ -15,7 +15,7 @@ if (__DEV__) {
   const rootElement = document.createElement('div');
   const documentBody = document.body;
   if (documentBody) {
-    documentBody.append(rootElement); 
+    documentBody.append(rootElement);
   }
   render(<Root />, rootElement);
 }

@@ -2,14 +2,13 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
-import FakeLink from 'nanoaddr/components/FakeLink';
 
 const Container = styled.div`
   padding: 16px 0;
   background: white;
   text-align: center;
   color: black;
-`
+`;
 
 type State = {
   offline: boolean;
