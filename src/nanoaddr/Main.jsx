@@ -318,7 +318,7 @@ class Main extends React.Component<Props, State> {
           </Meta>
           <Description>
             {/* eslint-disable-next-line max-len */}
-            <p>The addresses and private keys are generated directly in your bowser without the involvment of any servers and are not transmitted over the Internet. For additional security we still recommend that you disconnect your computer from the Internet while using this site.</p>
+            <p>The addresses and private keys are generated directly in your browser without the involvment of any servers and are not transmitted over the Internet. For additional security we still recommend that you disconnect your computer from the Internet while using this site.</p>
           </Description>
           <Concurrency
             currentFactor={this.state.concurrencyFactor}
